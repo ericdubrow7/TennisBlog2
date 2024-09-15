@@ -8,12 +8,13 @@ body {
 header {
     background-color: #002d72; /* Dark blue background color */
     color: white;             /* White text color */
-    padding: 5px;            /* Space inside the header */
+    padding: 10px;            /* Space inside the header */
     text-align: center;       /* Center the text horizontally */
     position: fixed;          /* Fix the header’s position relative to the viewport */
     top: 0;                   /* Position the header at the top of the viewport */
     width: 100%;              /* Make the header span the full width of the viewport */
     z-index: 100;            /* Optional: Ensure the header is above other content */
+    height: 60px;              /* Set a fixed height for the header */    
 }
 
 nav a {
@@ -23,7 +24,8 @@ nav a {
 }
 
 .content {
-    padding: 20px;
+    padding-top: 70px;         /* Add padding to prevent overlap with the header */
+    padding-bottom: 50px;      /* Add padding to prevent overlap with the footer */
 }
 
 h2 {
@@ -46,5 +48,6 @@ footer {
     color: white;
     position: fixed;
     width: 100%;
+    height: 40px;              /* Set a fixed height for the footer */    
     bottom: 0;
 }
