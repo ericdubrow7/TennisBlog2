@@ -14,7 +14,7 @@ header {
     top: 0;                   /* Position the header at the top of the viewport */
     width: 100%;              /* Make the header span the full width of the viewport */
     z-index: 100;            /* Optional: Ensure the header is above other content */
-    height: 75px;              /* Set a fixed height for the header */    
+    height: 95px;              /* Set a fixed height for the header */    
 }
 
 nav a {
@@ -26,7 +26,7 @@ nav a {
 .content {
     padding-left: 20px;
     padding-right: 20px;
-    padding-top: 80px;         /* Add padding to prevent overlap with the header */
+    padding-top: 100px;         /* Add padding to prevent overlap with the header */
     padding-bottom: 40px;      /* Add padding to prevent overlap with the footer */
 }
 
