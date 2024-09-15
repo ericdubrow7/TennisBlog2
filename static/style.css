@@ -10,6 +10,8 @@ header {
     color: white;
     padding: 1em;
     text-align: center;
+    position: fixed;
+    font-size: 1.5em;
 }
 
 nav a {
