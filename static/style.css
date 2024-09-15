@@ -6,10 +6,14 @@ body {
 }
 
 header {
-    background-color: #002d72;
-    color: white;
-    padding: 1em;
-    text-align: center;
+    background-color: #002d72; /* Dark blue background color */
+    color: white;             /* White text color */
+    padding: 10px;            /* Space inside the header */
+    text-align: center;       /* Center the text horizontally */
+    position: fixed;          /* Fix the header’s position relative to the viewport */
+    top: 0;                   /* Position the header at the top of the viewport */
+    width: 100%;              /* Make the header span the full width of the viewport */
+    z-index: 1000;            /* Optional: Ensure the header is above other content */
 }
 
 nav a {
