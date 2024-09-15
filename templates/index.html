@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Latest Tennis News</h2>
+    <ul>
+        {% for post in posts %}
+        <li>
+            <h3><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
+            <p>By {{ post.author }} on {{ post.date }}</p>
+            <p>{{ post.content[:100] }}...</p> <!-- Show the first 100 characters of the post -->
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
