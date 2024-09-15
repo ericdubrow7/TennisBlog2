@@ -8,7 +8,7 @@ body {
 header {
     background-color: #002d72; /* Dark blue background color */
     color: white;             /* White text color */
-    padding: 10px;            /* Space inside the header */
+    padding: 25px;            /* Space inside the header */
     text-align: center;       /* Center the text horizontally */
     position: fixed;          /* Fix the header’s position relative to the viewport */
     top: 0;                   /* Position the header at the top of the viewport */
