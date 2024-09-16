@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Tennis News Blog</h1>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+        </nav>
+        <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="Tennis Ball" class="tennis-ball">  
+    </header>
+
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Tennis Blog</p>
+    </footer>
+</body>
+</html>
