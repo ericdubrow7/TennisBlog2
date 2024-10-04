@@ -51,5 +51,9 @@ def post(post_id):
     post = posts[post_id]
     return render_template('post.html', post=post)
 
+@app.route('/abouttheauthor')
+def abouttheauthor():
+    return render_template('abouttheauthor.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

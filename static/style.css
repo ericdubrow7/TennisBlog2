@@ -26,6 +26,15 @@ header img.tennis-ball {
     height: 80px; /* Adjust size as needed */
     width: auto;  /* Maintains aspect ratio */
 }
+header select.pagenavdropdown {
+    position: absolute;
+    top: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 20px; /* Adjust size as needed */
+    width: auto;  /* Maintains aspect ratio */
+}
 
 nav a {
     color: white;

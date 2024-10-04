@@ -12,7 +12,14 @@
         <nav>
             <a href="{{ url_for('index') }}">Home</a>
         </nav>
-        <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="Tennis Ball" class="tennis-ball">  
+        <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="Tennis Ball" class="tennis-ball"> 
+        
+        <!-- Dropdown Menu -->
+        <select id="pageDropdown" class="pagenavdropdown" onchange="navigateToPage()">
+            <option value="#">Select Page</option>
+            <option value="{{ url_for('index') }}">Home</option>
+            <option value="{{ url_for('abouttheauthor') }}">About the author</option>            
+        </select>
     </header>
 
     <div class="content">
@@ -22,5 +29,16 @@
     <footer>
         <p>&copy; 2024 Tennis Blog</p>
     </footer>
+
+    <!-- JavaScript for Dropdown Navigation -->
+    <script>
+        function navigateToPage() {
+            var dropdown = document.getElementById("pageDropdown");
+            var selectedPage = dropdown.value;
+            if (selectedPage !== "#") {
+                window.location.href = selectedPage;
+            }
+        }
+    </script>
 </body>
 </html>
