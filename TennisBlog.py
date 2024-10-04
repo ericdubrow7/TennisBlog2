@@ -5,12 +5,6 @@ app = Flask(__name__)
 # Sample blog posts
 posts = [
     {
-        'title': 'Latest news on military movements in Iran',
-        'author': 'John Doe',
-        'date': 'October 3, 2024',
-        'content': 'Iran launched almost 200 ballistic missiles towards Israel on Tuesday night. The Israeli military said most of the missiles were intercepted, but that a small number struck central and southern Israel. The only person reported to have been killed was a Palestinian man in the occupied West Bank. It was Iran’s second such attack on Israel this year, after it launched about 300 missiles and drones in April. Heres what we know so far.'
-    },
-    {
         'title': 'US Open 2024: Exciting Quarterfinal Matches',
         'author': 'John Doe',
         'date': 'September 15, 2024',
