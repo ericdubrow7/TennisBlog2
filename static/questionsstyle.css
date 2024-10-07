@@ -1,0 +1,71 @@
+header {
+    background-color: #002d72; /* Dark blue background color */
+    color: white;              /* White text color */
+    padding: 5px;              /* Space inside the header */
+    position: fixed;           /* Fix the header’s position relative to the viewport */
+    top: 0;                    /* Position the header at the top of the viewport */
+    width: 100%;               /* Make the header span the full width of the viewport */
+    z-index: 100;              /* Ensure the header is above other content */
+    height: 95px;              /* Set a fixed height for the header */    
+    display: flex;             /* Use flexbox to align items */
+    justify-content: center;   /* Center content horizontally */
+    align-items: center;       /* Vertically center items */
+    padding: 0 20px;           /* Add some padding on left and right */
+}
+
+header nav {
+    position: absolute;        /* Position nav absolutely inside the header */
+    left: 20px;                /* Align nav to the left edge */
+    top: 50%;                  /* Align nav vertically with the header */
+    transform: translateY(-50%); /* Adjust for proper vertical centering */
+}
+
+header nav a {
+    color: red;                /* Red link text */
+    margin: 0 20px;            /* Add horizontal space between the links */
+    text-decoration: none;     /* Remove underline from links */
+}
+
+header h1 {
+    margin: 0;                 /* Remove default margin */
+    font-size: 24px;           /* Adjust font size */
+}
+
+/* Styling for the form and response */
+.question-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 250px; /* Adjust margin to vertically center */
+    width: 100%; /* Make the form 80% of the viewport width */
+}
+
+.question-box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    background-color: #002d72;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-button:hover {
+    background-color: #004a9f;
+}
+
+.response-area {
+    margin-top: 30px;
+    padding: 20px;
+    width: 80%;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    display: none; /* Initially hidden */
+}

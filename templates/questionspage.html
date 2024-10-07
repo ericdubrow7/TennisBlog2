@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='questionsstyle.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}">Home</a>
+        </nav>
+        <h1>Ask me anything</h1>
+    </header>
+    <main>
+        <div class="question-form">
+            <form id="questionForm">
+                <!-- Text area for users to type in their questions -->
+                <textarea class="question-box" id="userQuestion" name="question" placeholder="Type your question here..." rows="5"></textarea>
+
+                <!-- Submit button -->
+                <input type="submit" class="submit-button" value="Submit">
+            </form>
+
+            <!-- Placeholder for displaying the response -->
+            <div class="response-area" id="response">
+                <p>Response will be displayed here...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Prevent form submission and handle displaying the user input
+        document.getElementById('questionForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting or redirecting
+
+            // Get the value entered by the user in the text area
+            var userQuestion = document.getElementById('userQuestion').value;
+
+            // Display the user's question in the response area
+            var responseArea = document.getElementById('response');
+            responseArea.style.display = 'block'; // Make the response area visible
+            responseArea.innerHTML = '<p>You asked: ' + userQuestion + '</p>';
+        });
+    </script>
+
+</body>
+</html>

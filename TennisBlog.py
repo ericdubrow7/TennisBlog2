@@ -49,5 +49,9 @@ def post(post_id):
 def abouttheauthor():
     return render_template('abouttheauthor.html')
 
+@app.route('/questionspage')
+def questionspage():
+    return render_template('questionspage.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
