@@ -31,19 +31,29 @@
     </main>
 
     <script>
-        // Prevent form submission and handle displaying the user input
-        document.getElementById('questionForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent the form from submitting or redirecting
+        document.getElementById('questionForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Prevent the form from submitting normally
 
-            // Get the value entered by the user in the text area
-            var userQuestion = document.getElementById('userQuestion').value;
+            // Get the user's question from the form
+            const userQuestion = document.getElementById('userQuestion').value;
 
-            // Display the user's question in the response area
+            // Send the question to the Flask backend using fetch
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: userQuestion })
+            });
+
+            // Parse the JSON response
+            const data = await response.json();
             var responseArea = document.getElementById('response');
             responseArea.style.display = 'block'; // Make the response area visible
-            responseArea.innerHTML = '<p>You asked: ' + userQuestion + '</p>';
+            
+            // Display the response from the server in the response area
+            responseArea.innerHTML = `<p>Response: ${data.response}</p>`;
         });
     </script>
-
 </body>
 </html>
