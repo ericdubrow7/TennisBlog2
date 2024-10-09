@@ -3,12 +3,12 @@ from find_article_sources import findarticlesources
 from flask import Blueprint, request, jsonify
 import openai
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import json
 from newsapi import NewsApiClient
 from datetime import datetime
 # Load environment variables from .env file
-load_dotenv()
+#load_dotenv()
 
 # Set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")

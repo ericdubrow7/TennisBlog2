@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 import json
 from newsapi import NewsApiClient
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 # Load environment variables from .env file
-load_dotenv()
+#load_dotenv()
 
 date = '2024-10-01'
 #news_api_key = os.getenv("NEWSAPI_API_KEY")
