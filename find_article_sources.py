@@ -7,7 +7,7 @@ load_dotenv()
 date = '2024-10-01'
 #news_api_key = os.getenv("NEWSAPI_API_KEY")
 def findarticlesources():
-    news_api_key = "87e00ea51cf440758b04ee8a73ae892d"
+    news_api_key = ""
     newsapi = NewsApiClient(api_key = news_api_key)
     all_articles = newsapi.get_everything(q='Tennis',
                                         from_param=date,
