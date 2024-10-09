@@ -1,13 +1,16 @@
 from flask import Flask, render_template
 from QuestionresponseAPI import ask_bp
 import json
+from datetime import datetime
 app = Flask(__name__)
 
 # Sample blog posts
 def load_posts():
     with open('posts.json', 'r') as file:
         posts = json.load(file)
-    return posts
+    # Sort the posts by date
+    sorted_posts = sorted(posts, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'), reverse=True)
+    return sorted_posts
 
 @app.route('/')
 def index():
