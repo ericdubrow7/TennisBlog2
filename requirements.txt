@@ -1,7 +1,5 @@
 Flask==2.3.3
 openai
-os
-dotenv
 newsapi
 datetime
 gunicorn
