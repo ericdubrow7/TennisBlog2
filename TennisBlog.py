@@ -31,7 +31,7 @@ def abouttheauthor():
 def questionspage():
     return render_template('questionspage.html')
 
-app.register_blueprint(ask_bp)
+#app.register_blueprint(ask_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)
