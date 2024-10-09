@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import json
 from newsapi import NewsApiClient
 import os
