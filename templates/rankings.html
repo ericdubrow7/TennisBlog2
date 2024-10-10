@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='rankingsstyle.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Current Rankings</h1>
+        <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="Tennis Ball" class="tennis-ball"> 
+        
+        <!-- Dropdown Menu -->
+        <select id="pageDropdown" class="pagenavdropdown" onchange="navigateToPage()">
+            <option value="#">Select Page</option>
+            <option value="{{ url_for('index') }}">Home</option>
+            <option value="{{ url_for('rankings') }}">Rankings</option>
+            <option value="{{ url_for('abouttheauthor') }}">About the author</option> 
+            <option value="{{ url_for('questionspage') }}">Questions Page</option>            
+        </select>
+    </header>
+
+    <main>
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h2 class="text-center mb-4">ATP Rankings</h2>
+                    
+                    <!-- Button to Toggle Rankings -->
+                    <button id="toggleRankings" class="btn btn-primary mb-4" onclick="toggleRankings()">Switch to WTA Rankings</button>
+                    
+                    <!-- Data Last Refreshed -->
+                    <div class="text-center mb-3" id="lastModifiedDate">
+                        <strong>Data Last Refreshed: </strong> {{ last_modified_date }}
+                    </div>
+                    
+                    <!-- Table to store data -->
+                    <table id="rankingsTable" class="table table-striped table-bordered table-hover text-center">
+                        <thead class="thead-dark bg-dark text-white">
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Ranking</th>
+                                <th>Movement</th>
+                                <th>Points</th>
+                                <th>Country</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for player in rankings %}
+                            <tr>
+                                <td>{{ player.full_name }}</td>
+                                <td>{{ player.ranking }}</td>
+                                <td>{{ player.movement if player.movement else '-' }}</td>
+                                <td>{{ player.ranking_points }}</td>
+                                <td>{{ player.country }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript for Dropdown Navigation -->
+    <script>
+        var isATP = true; // Keep track of which rankings are currently being displayed
+
+        function navigateToPage() {
+            var dropdown = document.getElementById("pageDropdown");
+            var selectedPage = dropdown.value;
+            if (selectedPage !== "#") {
+                window.location.href = selectedPage;
+            }
+        }
+        
+        function toggleRankings() {
+            var tableBody = document.querySelector("#rankingsTable tbody");
+            var button = document.getElementById("toggleRankings");
+            var lastModifiedDateLabel = document.getElementById("lastModifiedDate");
+
+            if (isATP) {
+                // Replace ATP rankings with WTA rankings
+                fetch("{{ url_for('WTArankings') }}")
+                    .then(response => response.json())
+                    .then(data => {
+                        tableBody.innerHTML = ""; // Clear current table data
+                        data.rankings.forEach(player => {
+                            tableBody.innerHTML += `
+                                <tr>
+                                    <td>${player.full_name}</td>
+                                    <td>${player.ranking}</td>
+                                    <td>${player.movement ? player.movement : '-'}</td>
+                                    <td>${player.ranking_points}</td>
+                                    <td>${player.country}</td>
+                                </tr>
+                            `;
+                        });
+                        button.textContent = "Switch to ATP Rankings"; // Update button text
+                        lastModifiedDateLabel.innerHTML = `<strong>Data Last Refreshed:</strong> ${data.last_modified_date}`; // Update last modified date
+                        isATP = false; // Update state
+                    })
+                    .catch(error => console.error('Error fetching WTA rankings:', error));
+            } else {
+                // Replace WTA rankings with ATP rankings
+                // Assuming you already have ATP rankings in your template
+                location.reload(); // Reload the page to fetch ATP rankings again
+            }
+        }
+    </script>
+</body>
+</html>
