@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Latest Tennis News</h2>
-    <ul>
-        {% for post in posts %}
-        <li>
-            <h3><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
-            <p>By {{ post.author }} on {{ post.date }}</p>
-            <p>{{ post.content[:100] }}...</p> <!-- Show the first 100 characters of the post -->
-        </li>
-        {% endfor %}
-    </ul>
+<div class="content-wrapper">
+    <div class="posts-column">
+        <h2>Latest Tennis News</h2>
+        <ul>
+            {% for post in posts %}
+            <li>
+                <h3><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
+                <p>By {{ post.author }} on {{ post.date }}</p>
+                <p>{{ post.content[:100] }}...</p> <!-- Show the first 100 characters of the post -->
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="gif-column">
+        <img class="gif-first" src="{{ url_for('static', filename='Fed_Forehand2.gif') }}" alt="Featured GIF" >
+        <img class="gif-second" src="{{ url_for('static', filename='Fed_Forehand.gif') }}" alt="Featured GIF2" >
+    </div>
+</div>    
 {% endblock %}

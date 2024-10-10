@@ -77,3 +77,28 @@ footer {
     height: 30px;              /* Set a fixed height for the footer */    
     bottom: 0;
 }
+.content-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.posts-column {
+    width: 65%;  /* Adjust width of the posts section */
+    padding-right: 20px;
+}
+
+.gif-column {
+    width: 30%;  /* Adjust width of the GIF section */
+
+}
+
+.gif-column .gif-first {
+    width: 100%;  /* Ensure the GIF takes full width of the column */
+    height: auto; /* Maintain the aspect ratio */
+    padding-top: 40px;
+}
+.gif-column .gif-second {
+    width: 100%;  /* Ensure the GIF takes full width of the column */
+    height: auto; /* Maintain the aspect ratio */
+    padding-top: 40px;
+}
