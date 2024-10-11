@@ -3,13 +3,12 @@ import os
 import json
 
 def get_rankings():
-    rankings_key = os.getenv("TENNIS_DATA_API_KEY")
-    base_url = "https://tennis-live-data.p.rapidapi.com/rankings/"
-    tour_code = "ATP"
-    url = f"{base_url}{tour_code}"
+    rankings_key = os.getenv("TENNIS_DATA_API_KEY_UPDATED")
+    base_url = "https://tennisapi1.p.rapidapi.com/api/tennis/rankings/atp"
+    url = f"{base_url}"
     headers = {
         "x-rapidapi-key": rankings_key,
-        "x-rapidapi-host": "tennis-live-data.p.rapidapi.com"
+        "x-rapidapi-host": "tennisapi1.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
     
@@ -26,13 +25,12 @@ def get_rankings():
         return None
 
 def get_WTArankings():
-    rankings_key = os.getenv("TENNIS_DATA_API_KEY")
-    base_url = "https://tennis-live-data.p.rapidapi.com/rankings/"
-    tour_code = "WTA"
-    url = f"{base_url}{tour_code}"
+    rankings_key = os.getenv("TENNIS_DATA_API_KEY_UPDATED")
+    base_url = "https://tennisapi1.p.rapidapi.com/api/tennis/rankings/wta"
+    url = f"{base_url}"
     headers = {
         "x-rapidapi-key": rankings_key,
-        "x-rapidapi-host": "tennis-live-data.p.rapidapi.com"
+        "x-rapidapi-host": "tennisapi1.p.rapidapi.com"
     }
     response = requests.get(url, headers=headers)
     
@@ -47,6 +45,5 @@ def get_WTArankings():
     else:
         print(f"Error: {response.status_code}")
         return None
-
 get_WTArankings()
 get_rankings()

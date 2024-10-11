@@ -53,19 +53,19 @@
                             <tr>
                                 <th>Full Name</th>
                                 <th>Ranking</th>
-                                <th>Movement</th>
                                 <th>Points</th>
+                                <th>Tournaments Played</th>
                                 <th>Country</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for player in rankings %}
                             <tr>
-                                <td>{{ player.full_name }}</td>
+                                <td>{{ player.rowName }}</td>
                                 <td>{{ player.ranking }}</td>
-                                <td>{{ player.movement if player.movement else '-' }}</td>
-                                <td>{{ player.ranking_points }}</td>
-                                <td>{{ player.country }}</td>
+                                <td>{{ player.points }}</td>
+                                <td>{{ player.tournamentsPlayed if player.tournamentsPlayed else '-' }}</td>
+                                <td>{{ player.country.name }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -101,11 +101,11 @@
                         data.rankings.forEach(player => {
                             tableBody.innerHTML += `
                                 <tr>
-                                    <td>${player.full_name}</td>
+                                    <td>${player.rowName}</td>
                                     <td>${player.ranking}</td>
-                                    <td>${player.movement ? player.movement : '-'}</td>
-                                    <td>${player.ranking_points}</td>
-                                    <td>${player.country}</td>
+                                    <td>${player.points}</td>
+                                    <td>${player.tournamentsPlayed ? player.tournamentsPlayed : '-'}</td>                                    
+                                    <td>${player.team.country.name}</td>
                                 </tr>
                             `;
                         });

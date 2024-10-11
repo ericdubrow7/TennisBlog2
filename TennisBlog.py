@@ -54,15 +54,14 @@ def questionspage():
 @app.route('/rankings')
 def rankings():
     rankings,last_modified_date = load_rankings()
-    rankings = rankings['results']['rankings']
+    rankings = rankings['rankings']
     return render_template('rankings.html', rankings=rankings, last_modified_date=last_modified_date)
 
 @app.route('/WTArankings')
 def WTArankings():
     rankings, last_modified_date = load_WTArankings()
-    rankings = rankings['results']['rankings']
+    rankings = rankings['rankings']
     return jsonify(rankings=rankings, last_modified_date = last_modified_date)
-
 app.register_blueprint(ask_bp)
 
 if __name__ == '__main__':
