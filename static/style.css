@@ -54,9 +54,7 @@ h2 {
 }
 h4 {
     color: #100;
-    position: absolute;
-    top: 700px; /* Adjust as needed */
-    left: 700px; /* Adjust as needed */
+
 }
 ul {
     list-style: none;
