@@ -6,7 +6,7 @@ import os
 # Load environment variables from .env file
 #load_dotenv()
 
-date = '2024-10-08'
+date = '2024-10-12'
 #news_api_key = os.getenv("NEWSAPI_API_KEY")
 def findarticlesources():
     news_api_key = os.getenv("NEWSAPI_API_KEY")
