@@ -3,12 +3,20 @@ from find_article_sources import findarticlesources
 from flask import Blueprint, request, jsonify
 import openai
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 import json
 from newsapi import NewsApiClient
 from datetime import datetime
 # Load environment variables from .env file
-load_dotenv()
+#load_dotenv()
+
+# Load existing posts from the JSON file
+def load_existing_posts():
+    with open('posts.json', 'r') as file:
+        posts = json.load(file)
+    # Sort the posts by date
+    sorted_posts = sorted(posts, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'), reverse=True)
+    return sorted_posts
 
 # Set OpenAI API key
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -34,6 +42,10 @@ def generate_post(source_url):
 
 articles_info = findarticlesources()
 stories = []
+
+# Load the existing posts to check for duplicates
+existing_posts = load_existing_posts()
+existing_titles = [post['title'] for post in existing_posts]  # Extract all existing titles
 for article in articles_info:
     story=generate_post(article['url'])
     print(story)
@@ -48,13 +60,19 @@ for article in articles_info:
     file_path = 'posts.json'  # Path to your JSON file
     restricted_phrases = [
     "I'm unable to access external websites", 
-    "from external websites"  # Add as many phrases as needed
+    "external websites"  # Add as many phrases as needed
     ]  
 
     if any(phrase in new_post["content"] for phrase in restricted_phrases):
         print("Skipping next action as the content contains the restricted phrase.")
     else:
-        add_post_to_json(file_path, new_post)
+        if new_post['title'] in existing_titles:
+            print("Duplicate title found. Skipping the action.")
+        else:
+            # If the title doesn't exist, add the post
+            add_post_to_json(file_path, new_post)
+            print(f"Added new post: {new_post['title']}")
+
     stories.append(story)
 #print(stories)
 # Example usage:

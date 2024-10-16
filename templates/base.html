@@ -6,6 +6,18 @@
     <title>Tennis Blog</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GR1HJ525RY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-GR1HJ525RY');
+</script>
+
+
 <body>
     <header>
         <h1>Tennis News Blog</h1>
@@ -18,6 +30,7 @@
         <select id="pageDropdown" class="pagenavdropdown" onchange="navigateToPage()">
             <option value="#">Select Page</option>
             <option value="{{ url_for('index') }}">Home</option>
+            <option value="{{ url_for('rankings') }}">Rankings</option>
             <option value="{{ url_for('abouttheauthor') }}">About the author</option> 
             <option value="{{ url_for('questionspage') }}">Questions Page</option>            
         </select>
