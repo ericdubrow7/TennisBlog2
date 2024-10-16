@@ -1,6 +1,7 @@
 from flask import Flask, render_template
 from flask import Flask, jsonify
 from QuestionresponseAPI import ask_bp
+from Load_Rankings import load_rankings, load_WTArankings
 import json
 from datetime import datetime
 import os
@@ -13,24 +14,6 @@ def load_posts():
     # Sort the posts by date
     sorted_posts = sorted(posts, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'), reverse=True)
     return sorted_posts
-
-def load_rankings():
-    # Load the saved rankings data
-    with open("rankings.json", "r") as file:
-        rankings_data = json.load(file)
-    
-    modification_time = os.path.getmtime("rankings.json")
-    last_modified_date = datetime.fromtimestamp(modification_time).strftime('%Y-%m-%d %H:%M:%S')
-    return rankings_data,last_modified_date
-
-def load_WTArankings():
-    # Load the saved rankings data
-    with open("WTArankings.json", "r") as file:
-        WTArankings_data = json.load(file)
-    modification_time = os.path.getmtime("WTArankings.json")
-    last_modified_date = datetime.fromtimestamp(modification_time).strftime('%Y-%m-%d %H:%M:%S')
-    return WTArankings_data, last_modified_date
-
 
 @app.route('/')
 def index():
