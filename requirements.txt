@@ -3,5 +3,6 @@ openai
 newsapi-python
 datetime
 schedule
-azure
+azure.storage.blob
+azure.identity
 gunicorn
