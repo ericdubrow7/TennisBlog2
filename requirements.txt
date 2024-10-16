@@ -3,4 +3,5 @@ openai
 newsapi-python
 datetime
 schedule
+azure
 gunicorn
