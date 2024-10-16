@@ -62,6 +62,7 @@ def WTArankings():
     rankings, last_modified_date = load_WTArankings()
     rankings = rankings['rankings']
     return jsonify(rankings=rankings, last_modified_date = last_modified_date)
+
 app.register_blueprint(ask_bp)
 
 if __name__ == '__main__':
