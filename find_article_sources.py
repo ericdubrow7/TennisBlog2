@@ -2,18 +2,22 @@
 import json
 from newsapi import NewsApiClient
 import os
+from datetime import datetime, timedelta
+
 #from dotenv import load_dotenv
 # Load environment variables from .env file
 #load_dotenv()
 
-date = '2024-10-12'
+today = datetime.today().date()
+date = today - timedelta(days=1)
+
 #news_api_key = os.getenv("NEWSAPI_API_KEY")
 def findarticlesources():
     news_api_key = os.getenv("NEWSAPI_API_KEY")
     newsapi = NewsApiClient(api_key = news_api_key)
     all_articles = newsapi.get_everything(q='Tennis',
                                         from_param=date,
-                                        sources='espn',
+                                        #sources= 'NDTV News, cbc-news, espn',
                                         #domains=,
                                         language='en',
                                         sort_by='relevancy',
@@ -26,7 +30,9 @@ def findarticlesources():
     {
         'title': article['title'],
         'url': article['url'],
-        'publishedAt': article['publishedAt']
+        'publishedAt': article['publishedAt'],
+        'author': article['author'],
+        'source': article['source']['name']
     }
     for article in all_articles['articles']
     ]
@@ -36,5 +42,7 @@ def findarticlesources():
     #titles = [article['title'] for article in all_articles['articles']]
     #print(urls)
     print(articles_info)
+    pretty_data = json.dumps(articles_info, indent=4)
+    print(pretty_data)
     return(articles_info)
 findarticlesources()

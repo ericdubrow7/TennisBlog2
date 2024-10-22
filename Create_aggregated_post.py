@@ -61,6 +61,26 @@ articles_info = findarticlesources()
 stories = []
 
 
+openai.api_key = os.getenv("OPENAI_API_KEY")
+source_urls = []
+def generate_post(source_url):
+    Instruction = "Write a short article about recent tennis news."
+    
+    # Call the OpenAI API with the user's question
+    completion = openai.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", 
+             "content": f"{Instruction} using data from these websites {source_url}"}
+        ]
+    )
+
+    # Get the response from the API
+    response = completion.choices[0].message.content
+    # Send the response back to the front-end
+    #print(response)
+    return (response)
+
 
 
 # Load the existing posts to check for duplicates
