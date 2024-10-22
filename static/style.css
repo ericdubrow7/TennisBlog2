@@ -100,3 +100,72 @@ footer {
     height: auto; /* Maintain the aspect ratio */
     padding-top: 40px;
 }
+/* Mobile Optimizations */
+@media screen and (max-width: 768px) {
+    /* Header Adjustments */
+    header {
+        height: auto; /* Allow height to adjust based on content */
+        padding: 10px 5px;
+    }
+
+    header img.tennis-ball {
+        height: 50px; /* Reduce size of tennis ball on mobile */
+        top: 5px;
+        right: 5px;
+    }
+
+    header select.pagenavdropdown {
+        top: 30px; /* Adjust dropdown position */
+        left: 5px;
+        height: 30px;
+    }
+
+    /* Content Adjustments */
+    .content {
+        padding-top: 120px; /* More padding to avoid overlap with header */
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Adjust layout for columns */
+    .content-wrapper {
+        flex-direction: column; /* Stack columns vertically on small screens */
+        padding-bottom: 20px; /* Add padding below for spacing */
+    }
+
+    .posts-column,
+    .gif-column {
+        width: 100%; /* Take full width on mobile */
+        padding-right: 0; /* Remove right padding on posts */
+        padding-top: 20px; /* Add some spacing between sections */
+    }
+
+    /* Reduce padding for GIFs on mobile */
+    .gif-column .gif-first,
+    .gif-column .gif-second {
+        padding-top: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Further adjustments for small mobile screens */
+    header img.tennis-ball {
+        height: 40px; /* Reduce size for very small screens */
+    }
+
+    header select.pagenavdropdown {
+        height: 25px; /* Smaller dropdown */
+    }
+
+    /* Content padding adjustments */
+    .content {
+        padding-top: 130px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    footer {
+        height: 40px; /* Slightly larger footer for easier tapping */
+        padding-top: 15px;
+    }
+}
