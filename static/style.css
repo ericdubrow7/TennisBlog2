@@ -125,6 +125,7 @@ footer {
         padding-top: 120px; /* More padding to avoid overlap with header */
         padding-left: 10px;
         padding-right: 10px;
+        padding-bottom: 40px;
     }
     footer {
         height: 30px; /* Slightly larger footer for easier tapping */
