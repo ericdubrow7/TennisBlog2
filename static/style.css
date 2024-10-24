@@ -110,8 +110,8 @@ footer {
 
     header img.tennis-ball {
         height: auto; /* Reduce size of tennis ball on mobile */
-        top: auto;
-        right: auto;
+        top: 5px;
+        right: 5px;
     }
 
     header select.pagenavdropdown {
@@ -125,6 +125,10 @@ footer {
         padding-top: 120px; /* More padding to avoid overlap with header */
         padding-left: 10px;
         padding-right: 10px;
+    }
+    footer {
+        height: 30px; /* Slightly larger footer for easier tapping */
+        padding-top: 15px;
     }
 }
 
