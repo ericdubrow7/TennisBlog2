@@ -1,55 +1,88 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
 header {
-    background-color: #002d72; /* Dark blue background color */
-    color: white;              /* White text color */
-    padding: 5px;              /* Space inside the header */
-    position: fixed;           /* Fix the header’s position relative to the viewport */
-    top: 0;                    /* Position the header at the top of the viewport */
-    width: 100%;               /* Make the header span the full width of the viewport */
-    z-index: 100;              /* Ensure the header is above other content */
-    height: 95px;              /* Set a fixed height for the header */    
-    display: flex;             /* Use flexbox to align items */
-    justify-content: center;   /* Center content horizontally */
-    align-items: center;       /* Vertically center items */
-    padding: 0 20px;           /* Add some padding on left and right */
+    background-color: #002d72;
+    color: white;
+    padding: 12px 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+    min-height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 header nav {
-    position: absolute;        /* Position nav absolutely inside the header */
-    left: 20px;                /* Align nav to the left edge */
-    top: 50%;                  /* Align nav vertically with the header */
-    transform: translateY(-50%); /* Adjust for proper vertical centering */
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 header nav a {
-    color: red;                /* Red link text */
-    margin: 0 20px;            /* Add horizontal space between the links */
-    text-decoration: none;     /* Remove underline from links */
+    color: #ff6b6b;
+    margin: 0 10px;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: inline-block;
+    min-height: 44px;
+    line-height: 28px;
 }
 
 header h1 {
-    margin: 0;                 /* Remove default margin */
-    font-size: 24px;           /* Adjust font size */
+    margin: 0;
+    font-size: clamp(1.1rem, 4vw, 24px);
 }
 
-/* Styling for the form and response */
+main {
+    padding: 120px 20px 40px;
+    max-width: 100%;
+}
+
 .question-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 250px; /* Adjust margin to vertically center */
-    width: 100%; /* Make the form 80% of the viewport width */
+    margin-top: 40px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .question-box {
     width: 100%;
-    padding: 10px;
+    max-width: 100%;
+    padding: 12px;
     margin-bottom: 20px;
     font-size: 16px;
+    min-height: 120px;
+    box-sizing: border-box;
 }
 
 .submit-button {
-    padding: 10px 20px;
+    padding: 12px 24px;
+    min-height: 44px;
     background-color: #002d72;
     color: white;
     border: none;
@@ -64,8 +97,57 @@ header h1 {
 .response-area {
     margin-top: 30px;
     padding: 20px;
-    width: 80%;
+    width: 100%;
+    max-width: 100%;
     background-color: #f2f2f2;
     border: 1px solid #ccc;
-    display: none; /* Initially hidden */
+    display: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        min-height: auto;
+        padding: 12px 12px 12px 10px;
+    }
+
+    header nav {
+        position: static;
+        transform: none;
+        order: 1;
+        width: 100%;
+        text-align: center;
+    }
+
+    header h1 {
+        order: 2;
+        width: 100%;
+        text-align: center;
+        font-size: 1.2rem;
+    }
+
+    main {
+        padding: 140px 16px 40px;
+    }
+
+    .question-form {
+        margin-top: 20px;
+        padding: 0 8px;
+    }
+
+    .response-area {
+        padding: 16px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    main {
+        padding: 160px 12px 40px;
+    }
+
+    .question-box {
+        padding: 10px;
+        font-size: 16px;
+    }
 }

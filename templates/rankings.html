@@ -47,7 +47,8 @@
                         <strong>Data Last Refreshed: </strong> {{ last_modified_date }}
                     </div>
                     
-                    <!-- Table to store data -->
+                    <!-- Table to store data (wrapper allows horizontal scroll on small screens) -->
+                    <div class="table-responsive">
                     <table id="rankingsTable" class="table table-striped table-bordered table-hover text-center">
                         <thead class="thead-dark bg-dark text-white">
                             <tr>
@@ -70,6 +71,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

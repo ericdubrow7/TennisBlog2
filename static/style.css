@@ -1,60 +1,96 @@
+/* Responsive base: prevent horizontal overflow */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    overflow-x: hidden;
 }
 
 header {
     background-color: #002d72; /* Dark blue background color */
     color: white;             /* White text color */
-    padding: 5px;            /* Space inside the header */
+    padding: 8px 10px;
     text-align: center;       /* Center the text horizontally */
     position: fixed;          /* Fix the header’s position relative to the viewport */
     top: 0;                   /* Position the header at the top of the viewport */
     width: 100%;              /* Make the header span the full width of the viewport */
     z-index: 100;            /* Optional: Ensure the header is above other content */
-    height: 95px;              /* Set a fixed height for the header */    
+    min-height: 95px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(1rem, 4vw, 1.5rem);
+    order: 1;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 header img.tennis-ball {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 80px; /* Adjust size as needed */
-    width: auto;  /* Maintains aspect ratio */
+    top: 10px;
+    right: 10px;
+    padding: 0 10px;
+    height: 80px;
+    width: auto;
+    max-height: 70px;
 }
+
 header select.pagenavdropdown {
     position: absolute;
-    top: 40px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 20px; /* Adjust size as needed */
-    width: auto;  /* Maintains aspect ratio */
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    padding: 8px 16px;
+    min-height: 44px;
+    min-width: 120px;
+    font-size: 1rem;
+    cursor: pointer;
 }
 
 nav a {
     color: white;
     margin: 0 10px;
     text-decoration: none;
+    padding: 8px 12px;
+    display: inline-block;
+    min-height: 44px;
+    line-height: 28px;
 }
 
 .content {
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 100px;         /* Add padding to prevent overlap with the header */
-    padding-bottom: 40px;      /* Add padding to prevent overlap with the footer */
+    padding: 100px 20px 60px;
+    max-width: 100%;
 }
 
 h2 {
     color: #333;
+    word-wrap: break-word;
 }
+
+h3 a {
+    word-wrap: break-word;
+}
+
 h4 {
     color: #100;
-
+    word-wrap: break-word;
 }
 ul {
     list-style: none;
@@ -71,87 +107,139 @@ footer {
     background-color: #002d72;
     color: white;
     position: fixed;
+    left: 0;
+    right: 0;
     width: 100%;
-    height: 20px;              /* Set a fixed height for the footer */    
+    min-height: 44px;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 .content-wrapper {
     display: flex;
     justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
 }
 
 .posts-column {
-    width: 65%;  /* Adjust width of the posts section */
-    padding-right: 20px;
+    flex: 1 1 65%;
+    min-width: 0;
+    padding-right: 0;
 }
 
 .gif-column {
-    width: 30%;  /* Adjust width of the GIF section */
+    flex: 0 1 30%;
+    min-width: 0;
+}
 
+.gif-column .gif-first,
+.gif-column .gif-second {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    padding-top: 40px;
 }
 
 .gif-column .gif-first {
-    width: 100%;  /* Ensure the GIF takes full width of the column */
-    height: auto; /* Maintain the aspect ratio */
-    padding-top: 40px;
+    padding-top: 0;
 }
-.gif-column .gif-second {
-    width: 100%;  /* Ensure the GIF takes full width of the column */
-    height: auto; /* Maintain the aspect ratio */
-    padding-top: 40px;
+
+.content p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
-/* Mobile Optimizations */
+/* Tablet: stack posts and GIFs */
+@media screen and (max-width: 900px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .posts-column,
+    .gif-column {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    .gif-column {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    .gif-column .gif-first,
+    .gif-column .gif-second {
+        max-width: 280px;
+        padding-top: 20px;
+    }
+}
+
+/* Mobile */
 @media screen and (max-width: 768px) {
-    /* Header Adjustments */
     header {
-        height: auto; /* Allow height to adjust based on content */
-        padding: 10px 5px;
+        min-height: auto;
+        padding: 12px 8px 12px 100px;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
     }
 
     header img.tennis-ball {
-        height: auto; /* Reduce size of tennis ball on mobile */
-        top: 5px;
-        right: 5px;
+        height: 50px;
+        max-height: 50px;
+        top: 8px;
+        right: 8px;
+        padding: 0 4px;
     }
 
     header select.pagenavdropdown {
-        top: 30px; /* Adjust dropdown position */
-        left: 5px;
-        height: 30px;
+        top: 50%;
+        left: 8px;
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 0.95rem;
     }
 
-    /* Content Adjustments */
-    .content {
-        padding-top: 120px; /* More padding to avoid overlap with header */
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 40px;
+    nav a {
+        margin: 0 6px;
+        padding: 6px 8px;
     }
-    footer {
-        height: 20px; /* Slightly larger footer for easier tapping */
-        padding-top: 15px;
+
+    .content {
+        padding-top: 100px;
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 60px;
+    }
+
+    .gif-column .gif-first,
+    .gif-column .gif-second {
+        max-width: 100%;
     }
 }
 
 @media screen and (max-width: 480px) {
-    /* Further adjustments for small mobile screens */
+    header {
+        padding: 10px 6px 10px 90px;
+    }
+
     header img.tennis-ball {
-        height: 40px; /* Reduce size for very small screens */
+        height: 40px;
+        max-height: 40px;
     }
 
     header select.pagenavdropdown {
-        height: 25px; /* Smaller dropdown */
+        min-width: 100px;
+        padding: 8px 10px;
     }
 
-    /* Content padding adjustments */
     .content {
-        padding-top: 130px;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
-
-    footer {
-        height: 40px; /* Slightly larger footer for easier tapping */
-        padding-top: 15px;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-bottom: 56px;
     }
 }
