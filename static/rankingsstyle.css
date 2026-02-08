@@ -1,65 +1,168 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+}
+
 header {
-    background-color: #002d72; /* Dark blue background color */
-    color: white;              /* White text color */
-    padding: 5px;              /* Space inside the header */
-    position: fixed;           /* Fix the header’s position relative to the viewport */
-    top: 0;                    /* Position the header at the top of the viewport */
-    width: 100%;               /* Make the header span the full width of the viewport */
-    z-index: 100;              /* Ensure the header is above other content */
-    height: 95px;              /* Set a fixed height for the header */    
-    display: flex;             /* Use flexbox to align items */
-    justify-content: center;   /* Center content horizontally */
-    align-items: center;       /* Vertically center items */
-    padding: 0 20px;           /* Add some padding on left and right */
+    background-color: #002d72;
+    color: white;
+    padding: 8px 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 100;
+    min-height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 12px 10px 12px 100px;
 }
 
 header h1 {
-    margin: 0;                 /* Remove default margin */
-    font-size: 24px;           /* Adjust font size */
+    margin: 0;
+    font-size: clamp(1rem, 4vw, 24px);
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
 }
 
 header img.tennis-ball {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    right: 10px; /* Adjust as needed */
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 80px; /* Adjust size as needed */
-    width: auto;  /* Maintains aspect ratio */
-}
-header select.pagenavdropdown {
-    position: absolute;
-    top: 40px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 20px; /* Adjust size as needed */
-    width: auto;  /* Maintains aspect ratio */
+    top: 10px;
+    right: 10px;
+    padding: 0 10px;
+    height: 80px;
+    width: auto;
+    max-height: 70px;
 }
 
-/* Center the table in the container and add styling */
+header select.pagenavdropdown {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 10px;
+    padding: 8px 16px;
+    min-height: 44px;
+    min-width: 120px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+main {
+    padding: 120px 16px 60px;
+    max-width: 100%;
+}
+
+.table-responsive-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -16px;
+    padding: 0 16px;
+}
+
 .table {
-    width: 100%;  /* Full width of the column */
+    width: 100%;
+    min-width: 400px;
     margin-bottom: 20px;
 }
-/* Center the table text */
+
 table.table {
     text-align: center;
     border-collapse: collapse;
 }
 
-/* Dark header */
 .thead-dark {
     background-color: #343a40;
     color: white;
 }
 
-/* Table hover effect */
 .table-hover tbody tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Align the table in the center */
 .container {
     text-align: center;
+    max-width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        min-height: auto;
+        padding: 12px 8px 12px 100px;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
+    }
+
+    header img.tennis-ball {
+        height: 50px;
+        max-height: 50px;
+        top: 8px;
+        right: 8px;
+    }
+
+    header select.pagenavdropdown {
+        left: 8px;
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    main {
+        padding: 100px 12px 60px;
+    }
+
+    .table {
+        min-width: 320px;
+        font-size: 0.9rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    header {
+        padding: 10px 6px 10px 90px;
+    }
+
+    header img.tennis-ball {
+        height: 40px;
+        max-height: 40px;
+    }
+
+    header select.pagenavdropdown {
+        min-width: 100px;
+        padding: 8px 10px;
+    }
+
+    main {
+        padding: 100px 8px 56px;
+    }
+
+    .table {
+        min-width: 280px;
+        font-size: 0.85rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.4rem;
+    }
 }
