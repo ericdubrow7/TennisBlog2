@@ -2,11 +2,13 @@
 import json
 from newsapi import NewsApiClient
 import os
+from datetime import datetime, timedelta
 #from dotenv import load_dotenv
 # Load environment variables from .env file
 #load_dotenv()
 
-date = '2024-10-12'
+today = datetime.today().date()
+date = today - timedelta(days=1)
 #news_api_key = os.getenv("NEWSAPI_API_KEY")
 def findarticlesources():
     news_api_key = os.getenv("NEWSAPI_API_KEY")

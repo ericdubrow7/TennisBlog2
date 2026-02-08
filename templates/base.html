@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tennis Blog</title>
+    <title>{% block title %}Tennis Blog{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
 </head>
 
 <!-- Google tag (gtag.js) -->
@@ -13,38 +17,35 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-GR1HJ525RY');
 </script>
 
-
 <body>
-    <header>
-        <h1>Tennis News Blog</h1>
-        <nav>
+    <header class="site-header">
+        <div class="site-header__brand">
+            <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="" class="site-header__logo" width="32" height="32">
+            <h1 class="site-header__title">Tennis News Blog</h1>
+        </div>
+        <nav class="site-header__nav">
             <a href="{{ url_for('index') }}">Home</a>
+            <select id="pageDropdown" class="site-header__select pagenavdropdown" onchange="navigateToPage()" aria-label="Navigate to page">
+                <option value="#">Select Page</option>
+                <option value="{{ url_for('index') }}">Home</option>
+                <option value="{{ url_for('rankings') }}">Rankings</option>
+                <option value="{{ url_for('abouttheauthor') }}">About the author</option>
+                <option value="{{ url_for('questionspage') }}">Questions</option>
+            </select>
         </nav>
-        <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="Tennis Ball" class="tennis-ball"> 
-        
-        <!-- Dropdown Menu -->
-        <select id="pageDropdown" class="pagenavdropdown" onchange="navigateToPage()">
-            <option value="#">Select Page</option>
-            <option value="{{ url_for('index') }}">Home</option>
-            <option value="{{ url_for('rankings') }}">Rankings</option>
-            <option value="{{ url_for('abouttheauthor') }}">About the author</option> 
-            <option value="{{ url_for('questionspage') }}">Questions Page</option>            
-        </select>
     </header>
 
-    <div class="content">
+    <main class="main-content {% block main_class %}{% endblock %}">
         {% block content %}{% endblock %}
-    </div>
+    </main>
 
-    <footer>
+    <footer class="site-footer">
         <p>&copy; 2024 Tennis Blog</p>
     </footer>
 
-    <!-- JavaScript for Dropdown Navigation -->
     <script>
         function navigateToPage() {
             var dropdown = document.getElementById("pageDropdown");
@@ -54,5 +55,6 @@
             }
         }
     </script>
+    {% block scripts %}{% endblock %}
 </body>
 </html>

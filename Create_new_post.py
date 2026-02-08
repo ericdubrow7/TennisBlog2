@@ -7,14 +7,31 @@ import os
 import json
 from newsapi import NewsApiClient
 from datetime import datetime
+from azure.storage.blob import BlobServiceClient, BlobClient
+from azure.identity import ClientSecretCredential
 # Load environment variables from .env file
 #load_dotenv()
 
+# Your Azure details
+tenant_id = os.getenv("YOUR_AZURE_TENANT_ID")
+client_id = os.getenv("YOUR_AZURE_CLIENT_ID")
+client_secret = os.getenv("YOUR_AZURE_CLIENT_SECRET")
+storage_account_name = os.getenv("YOUR_STORAGE_ACCOUNT_NAME")
+container_name = os.getenv("YOUR_CONTAINER_NAME")
+
+credential = ClientSecretCredential(tenant_id, client_id, client_secret)
+blob_service_client = BlobServiceClient(
+    account_url=f"https://{storage_account_name}.blob.core.windows.net",
+    credential=credential
+)
+
 # Load existing posts from the JSON file
 def load_existing_posts():
-    with open('posts.json', 'r') as file:
-        posts = json.load(file)
-    # Sort the posts by date
+    blob_name = 'postsdata/posts.json'  # The name of the JSON file in blob storage
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+
+    download_stream = blob_client.download_blob()
+    posts = json.loads(download_stream.readall().decode('utf-8'))
     sorted_posts = sorted(posts, key=lambda x: datetime.strptime(x['date'], '%Y-%m-%d'), reverse=True)
     return sorted_posts
 
@@ -70,7 +87,7 @@ for article in articles_info:
             print("Duplicate title found. Skipping the action.")
         else:
             # If the title doesn't exist, add the post
-            add_post_to_json(file_path, new_post)
+            add_post_to_json(new_post)
             print(f"Added new post: {new_post['title']}")
 
     stories.append(story)

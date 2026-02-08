@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content-wrapper">
-    <div class="posts-column">
-        <h2>Latest Tennis News</h2>
-        <ul>
-            {% for post in posts %}
-            <li>
-                <h3><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
-                <p>By {{ post.author }} on {{ post.date }}</p>
-                <p>{{ post.content[:100] }}...</p> <!-- Show the first 100 characters of the post -->
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="gif-column">
-        <img class="gif-first" src="{{ url_for('static', filename='Fed_Forehand2.gif') }}" alt="Featured GIF" >
-        <img class="gif-second" src="{{ url_for('static', filename='Fed_Forehand.gif') }}" alt="Featured GIF2" >
-    </div>
-</div>    
+<h2 class="page-title">Latest Tennis News</h2>
+<div class="content-grid">
+    <ul class="posts-list">
+        {% for post in posts %}
+        <li>
+            <article class="card">
+                <h3 class="card__title"><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
+                <p class="meta">By {{ post.author }} on {{ post.date }}</p>
+                <p class="card__excerpt">{{ post.content[:100] }}...</p>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+    <aside class="sidebar">
+        <div class="sidebar__images">
+            <img src="{{ url_for('static', filename='Fed_Forehand2.gif') }}" alt="Tennis forehand" loading="lazy">
+            <img src="{{ url_for('static', filename='Fed_Forehand.gif') }}" alt="Tennis forehand" loading="lazy">
+        </div>
+    </aside>
+</div>
 {% endblock %}
