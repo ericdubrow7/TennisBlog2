@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Match Point Media{% endblock %}
+
+{% block main_class %}home-page{% endblock %}
+
+{% block content %}
+<section class="hero" id="hero">
+    <div class="hero__bg hero__bg--forehand is-visible" data-duration="1.19" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--bachand" data-duration="1.2" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--alcaraz" data-duration="7.4" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--celebration" data-duration="3.71" aria-hidden="true"></div>
+    <h2 class="hero__title">Match Point Media</h2>
+    <p class="hero__tagline">Tennis news and insights</p>
+</section>
+
+<section class="home-section latest-news" id="latest-news">
+    <h2 class="section-title section-title--centered">Latest News</h2>
+    <ul class="latest-news-grid">
+        {% for post in posts %}
+        <li>
+            <article class="card">
+                <h3 class="card__title"><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
+                <p class="meta">By {{ post.author }} · {{ post.date }}</p>
+                <p class="card__excerpt">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+    <p class="latest-news__link-wrap">
+        <a href="{{ url_for('articles') }}" class="btn btn--secondary">View all articles</a>
+    </p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+  var hero = document.getElementById('hero');
+  if (!hero) return;
+  var layers = hero.querySelectorAll('.hero__bg');
+  var n = layers.length;
+  if (n === 0) return;
+  var current = 0;
+
+  function showNext() {
+    layers[current].classList.remove('is-visible');
+    current = (current + 1) % n;
+    layers[current].classList.add('is-visible');
+    var duration = parseInt(layers[current].getAttribute('data-duration'), 10) || 5;
+    duration = duration * 1000;
+    setTimeout(showNext, duration);
+  }
+
+  var firstDuration = parseInt(layers[0].getAttribute('data-duration'), 10) || 5;
+  setTimeout(showNext, firstDuration * 1000);
+})();
+</script>
+{% endblock %}
