@@ -30,6 +30,7 @@
             <select id="pageDropdown" class="site-header__select pagenavdropdown" onchange="navigateToPage()" aria-label="Navigate to page">
                 <option value="#">Select Page</option>
                 <option value="{{ url_for('index') }}">Home</option>
+                <option value="{{ url_for('articles') }}">All Articles</option>
                 <option value="{{ url_for('rankings') }}">Rankings</option>
                 <option value="{{ url_for('abouttheauthor') }}">About the author</option>
                 <option value="{{ url_for('questionspage') }}">Questions</option>

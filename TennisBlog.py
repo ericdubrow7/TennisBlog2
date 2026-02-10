@@ -38,7 +38,12 @@ def load_posts():
 @app.route('/')
 def index():
     posts = load_posts()
-    return render_template('index.html', posts=posts)
+    return render_template('home.html', posts=posts[:3])
+
+@app.route('/articles')
+def articles():
+    posts = load_posts()
+    return render_template('articles.html', posts=posts)
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
