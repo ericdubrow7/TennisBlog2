@@ -22,12 +22,11 @@
 
 <body>
     <header class="site-header">
-        <div class="site-header__brand">
+        <a class="site-header__brand site-header__brand-link" href="{{ url_for('index') }}" aria-label="Match Point Media (Home)">
             <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="" class="site-header__logo" width="32" height="32">
-            <h1 class="site-header__title">Tennis News Blog</h1>
-        </div>
+            <h1 class="site-header__title">Match Point Media</h1>
+        </a>
         <nav class="site-header__nav">
-            <a href="{{ url_for('index') }}">Home</a>
             <select id="pageDropdown" class="site-header__select pagenavdropdown" onchange="navigateToPage()" aria-label="Navigate to page">
                 <option value="#">Select Page</option>
                 <option value="{{ url_for('index') }}">Home</option>
