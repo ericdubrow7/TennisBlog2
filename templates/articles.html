@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}All Articles — Match Point Media{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Latest Tennis News</h2>
+<div class="content-grid">
+    <ul class="posts-list">
+        {% for post in posts %}
+        <li>
+            <article class="card">
+                <h3 class="card__title"><a href="{{ url_for('post', post_id=loop.index0) }}">{{ post.title }}</a></h3>
+                <p class="meta">By {{ post.author }} on {{ post.date }}</p>
+                <p class="card__excerpt">{{ post.content[:100] }}...</p>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+    <aside class="sidebar">
+        <div class="sidebar__images">
+            <img src="{{ url_for('static', filename='Fed_Forehand2.gif') }}" alt="Tennis forehand" loading="lazy">
+            <img src="{{ url_for('static', filename='Fed_Forehand.gif') }}" alt="Tennis forehand" loading="lazy">
+        </div>
+    </aside>
+</div>
+{% endblock %}

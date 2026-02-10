@@ -115,7 +115,7 @@ p:last-child {
   padding: 0 var(--space-6);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: var(--space-4);
   background: var(--color-header-bg);
   border-bottom: 1px solid var(--color-header-border);
@@ -127,6 +127,23 @@ p:last-child {
   align-items: center;
   gap: var(--space-3);
   min-width: 0;
+}
+
+.site-header__brand-link {
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius);
+  padding: var(--space-1) var(--space-2);
+  margin-left: calc(var(--space-2) * -1);
+  transition: background var(--transition), color var(--transition);
+}
+.site-header__brand-link:hover {
+  background: var(--color-bg);
+  color: inherit;
+}
+.site-header__brand-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
 }
 
 .site-header__logo {
@@ -437,6 +454,131 @@ p:last-child {
 }
 
 /* --------------------------------------------------------------------------
+   5b. Home page — hero + latest news
+   -------------------------------------------------------------------------- */
+.home-page .main-content {
+  padding: 0;
+  max-width: none;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  padding: var(--space-16) var(--space-6);
+  text-align: center;
+  background: #0f172a;
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+/* GIF layers — one visible at a time; JS switches after each GIF’s duration */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: center center / cover no-repeat;
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+}
+.hero__bg.is-visible {
+  opacity: 1;
+}
+.hero__bg--alcaraz {
+  background-image: url('carlos_alcaraz_forehand.gif');
+}
+.hero__bg--bachand {
+  background-image: url('Fed_Bachand.gif');
+}
+.hero__bg--celebration {
+  background-image: url('Carlos_Celebration.gif');
+}
+.hero__bg--forehand {
+  background-image: url('Fed_Forehand2.gif');
+}
+/* Dark overlay so text stays readable; sits above both GIFs */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.45) 0%,
+    rgba(15, 23, 42, 0.28) 50%,
+    rgba(15, 23, 42, 0.38) 100%
+  );
+  z-index: 1;
+}
+
+.hero__title,
+.hero__tagline {
+  position: relative;
+  z-index: 2;
+}
+
+.hero__title {
+  margin: 0 0 var(--space-4);
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  color: #ffffff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.hero__tagline {
+  margin: 0;
+  font-size: var(--text-xl);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+}
+
+.home-section {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6);
+}
+
+.home-section.latest-news {
+  padding-top: var(--space-12);
+}
+
+.section-title--centered {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.latest-news-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-8);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.latest-news-grid .card {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.latest-news-grid .card__excerpt {
+  flex: 1;
+}
+
+.latest-news__link-wrap {
+  text-align: center;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
    6. Page-specific — index (posts + sidebar)
    -------------------------------------------------------------------------- */
 .content-grid {
@@ -530,6 +672,9 @@ p:last-child {
   .content-grid {
     grid-template-columns: 1fr;
   }
+  .latest-news-grid {
+    grid-template-columns: 1fr;
+  }
   .sidebar {
     position: static;
   }
@@ -544,7 +689,27 @@ p:last-child {
   }
 }
 
+@media (max-width: 700px) {
+  .hero {
+    min-height: 50vh;
+    padding: var(--space-12) var(--space-4);
+    background-position: center 30%;
+  }
+  .hero__title {
+    font-size: clamp(2rem, 10vw, 2.5rem);
+  }
+  .hero__tagline {
+    font-size: var(--text-base);
+  }
+}
+
 @media (max-width: 768px) {
+  .latest-news-grid {
+    gap: var(--space-4);
+  }
+  .home-section {
+    padding: var(--space-10) var(--space-4);
+  }
   :root {
     --header-height: 3.5rem;
   }
