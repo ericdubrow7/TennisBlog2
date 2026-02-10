@@ -6,10 +6,10 @@
 
 {% block content %}
 <section class="hero" id="hero">
-    <div class="hero__bg hero__bg--forehand is-visible" data-duration="1.19" aria-hidden="true"></div>
-    <div class="hero__bg hero__bg--bachand" data-duration="1.2" aria-hidden="true"></div>
-    <div class="hero__bg hero__bg--alcaraz" data-duration="7.4" aria-hidden="true"></div>
-    <div class="hero__bg hero__bg--celebration" data-duration="3.71" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--forehand is-visible" data-duration="1.0" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--bachand" data-duration="1.0" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--alcaraz" data-duration="5" aria-hidden="true"></div>
+    <div class="hero__bg hero__bg--celebration" data-duration="3.3" aria-hidden="true"></div>
     <h2 class="hero__title">Match Point Media</h2>
     <p class="hero__tagline">Tennis news and insights</p>
 </section>
@@ -43,16 +43,26 @@
   if (n === 0) return;
   var current = 0;
 
+  /** Force the GIF on this layer to restart from the beginning by re-setting the background image URL with a cache-busting query. */
+  function restartGif(layer) {
+    var bg = getComputedStyle(layer).backgroundImage;
+    if (!bg || bg === 'none') return;
+    var url = bg.replace(/^url\(["']?|["']?\)$/g, '').split('?')[0];
+    layer.style.backgroundImage = 'url("' + url + '?t=' + Date.now() + '")';
+  }
+
   function showNext() {
     layers[current].classList.remove('is-visible');
     current = (current + 1) % n;
+    restartGif(layers[current]);
     layers[current].classList.add('is-visible');
-    var duration = parseInt(layers[current].getAttribute('data-duration'), 10) || 5;
+    var duration = parseFloat(layers[current].getAttribute('data-duration')) || 5;
     duration = duration * 1000;
     setTimeout(showNext, duration);
   }
 
-  var firstDuration = parseInt(layers[0].getAttribute('data-duration'), 10) || 5;
+  restartGif(layers[0]);
+  var firstDuration = parseFloat(layers[0].getAttribute('data-duration')) || 5;
   setTimeout(showNext, firstDuration * 1000);
 })();
 </script>
