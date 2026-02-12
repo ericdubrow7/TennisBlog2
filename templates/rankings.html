@@ -40,14 +40,6 @@
 <script>
 var isATP = true;
 
-function navigateToPage() {
-    var dropdown = document.getElementById("pageDropdown");
-    var selectedPage = dropdown.value;
-    if (selectedPage !== "#") {
-        window.location.href = selectedPage;
-    }
-}
-
 function toggleRankings() {
     var tableBody = document.querySelector("#rankingsTable tbody");
     var button = document.getElementById("toggleRankings");

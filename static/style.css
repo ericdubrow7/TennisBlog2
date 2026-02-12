@@ -16,8 +16,11 @@
   --color-accent: #2563eb;
   --color-accent-hover: #1d4ed8;
   --color-accent-subtle: #eff6ff;
-  --color-header-bg: #ffffff;
-  --color-header-border: #e2e8f0;
+  --color-header-bg: transparent;
+  --color-header-border: transparent;
+  --color-nav-bar-bg: #ffffff;
+  --color-nav-link: #475569;
+  --color-nav-link-active: #0f172a;
   --color-footer-text: #64748b;
 
   /* Spacing scale (4px base) */
@@ -111,15 +114,25 @@ p:last-child {
   position: sticky;
   top: 0;
   z-index: 100;
-  height: var(--header-height);
-  padding: 0 var(--space-6);
+  padding: var(--space-3) var(--space-6);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: var(--space-4);
+  justify-content: center;
   background: var(--color-header-bg);
   border-bottom: 1px solid var(--color-header-border);
   box-shadow: var(--shadow-sm);
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: var(--container-wide);
+  padding: var(--space-2) var(--space-5);
+  background: var(--color-nav-bar-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
 }
 
 .site-header__brand {
@@ -127,6 +140,7 @@ p:last-child {
   align-items: center;
   gap: var(--space-3);
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .site-header__brand-link {
@@ -147,10 +161,12 @@ p:last-child {
 }
 
 .site-header__logo {
-  width: 2rem;
-  height: 2rem;
+  height: 2.5rem;
+  width: auto;
+  max-height: 100%;
   object-fit: contain;
   flex-shrink: 0;
+  display: block;
 }
 
 .site-header__title {
@@ -167,42 +183,78 @@ p:last-child {
 .site-header__nav {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-1);
+  flex-wrap: wrap;
 }
 
-.site-header__nav a {
-  padding: var(--space-2) var(--space-3);
+.site-header__link {
+  padding: var(--space-2) var(--space-4);
   font-size: var(--text-sm);
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: var(--color-nav-link);
+  border-radius: var(--radius);
+  text-decoration: none;
+  transition: color var(--transition), background var(--transition);
+  white-space: nowrap;
+}
+.site-header__link:hover {
+  color: var(--color-nav-link-active);
+  background: var(--color-bg);
+}
+.site-header__link.is-active {
+  color: var(--color-nav-link-active);
+  font-weight: 600;
+  background: var(--color-accent-subtle);
+}
+.site-header__link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+/* News dropdown */
+.site-header__dropdown {
+  position: relative;
+}
+
+.site-header__dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: var(--space-1) 0 0;
+  padding: var(--space-1);
+  min-width: 11rem;
+  list-style: none;
+  background: var(--color-nav-bar-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity var(--transition), visibility var(--transition), transform var(--transition);
+  z-index: 50;
+}
+
+.site-header__dropdown:hover .site-header__dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.site-header__dropdown-menu a {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-nav-link);
+  text-decoration: none;
   border-radius: var(--radius);
   transition: color var(--transition), background var(--transition);
 }
-.site-header__nav a:hover {
-  color: var(--color-text);
-  background: var(--color-bg);
-}
 
-.site-header__select {
-  padding: var(--space-2) var(--space-3);
-  font-family: inherit;
-  font-size: var(--text-sm);
-  color: var(--color-text);
+.site-header__dropdown-menu a:hover {
+  color: var(--color-nav-link-active);
   background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  cursor: pointer;
-  min-height: 2.75rem;
-  min-width: 8rem;
-  transition: border-color var(--transition), box-shadow var(--transition);
-}
-.site-header__select:hover {
-  border-color: var(--color-text-muted);
-}
-.site-header__select:focus {
-  outline: none;
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px var(--color-accent-subtle);
 }
 
 .main-content {
@@ -457,18 +509,41 @@ p:last-child {
    5b. Home page — hero + latest news
    -------------------------------------------------------------------------- */
 .home-page .main-content {
+  position: relative;
   padding: 0;
   max-width: none;
 }
 
+/* Full-bleed beige gradient behind hero (edge to edge), fading to off-white */
+.home-page .main-content::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  top: 0;
+  height: 85vh;
+  background: linear-gradient(
+    180deg,
+    #d4c4b0 0%,
+    #e2d6c8 25%,
+    #ebe5dc 55%,
+    #f2eee8 85%,
+    #f6f4f0 100%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
 .hero {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 70vh;
-  padding: var(--space-16) var(--space-6);
+  padding: var(--space-16) var(--space-4);
   text-align: center;
   background: #0f172a;
   border-bottom: 1px solid var(--color-border);
@@ -527,6 +602,16 @@ p:last-child {
   line-height: 1.05;
   color: #ffffff;
   text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5), 0 0 1px rgba(0, 0, 0, 0.8);
+}
+
+.hero__title-logo {
+  display: block;
+  width: auto;
+  max-width: min(95vw, 44rem);
+  height: auto;
+  max-height: 6rem;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 20px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 1px rgba(0, 0, 0, 0.4));
 }
 
 .hero__tagline {
@@ -695,8 +780,9 @@ p:last-child {
     padding: var(--space-12) var(--space-4);
     background-position: center 30%;
   }
-  .hero__title {
-    font-size: clamp(2rem, 10vw, 2.5rem);
+  .hero__title-logo {
+    max-width: min(95vw, 28rem);
+    max-height: 4rem;
   }
   .hero__tagline {
     font-size: var(--text-base);
@@ -728,18 +814,24 @@ p:last-child {
   }
 
   .site-header__logo {
-    width: 1.75rem;
-    height: 1.75rem;
+    height:2.5rem;
+    width: auto;
+  }
+
+  .site-header__bar {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
   }
 
   .site-header__nav {
-    order: 3;
     width: 100%;
     justify-content: center;
+    order: 3;
   }
 
-  .site-header__select {
-    min-width: 7rem;
+  .site-header__link {
+    padding: var(--space-2) var(--space-3);
     font-size: var(--text-xs);
   }
 

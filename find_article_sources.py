@@ -7,36 +7,54 @@ from datetime import datetime, timedelta
 # Load environment variables from .env file
 #load_dotenv()
 
-today = datetime.today().date()
-date = today - timedelta(days=1)
-#news_api_key = os.getenv("NEWSAPI_API_KEY")
+# How far back to search (more days = more potential articles)
+DAYS_BACK = 2
+# Number of pages to fetch (100 articles per page; free tier may limit total results)
+MAX_PAGES = 3
+
 def findarticlesources():
     news_api_key = os.getenv("NEWSAPI_API_KEY")
-    newsapi = NewsApiClient(api_key = news_api_key)
-    all_articles = newsapi.get_everything(q='Tennis',
-                                        from_param=date,
-                                        sources='espn',
-                                        #domains=,
-                                        language='en',
-                                        sort_by='relevancy',
-                                        page=1)
-    print(json.dumps(all_articles, indent=4))
+    newsapi = NewsApiClient(api_key=news_api_key)
 
-        # Initialize an empty list to store the URLs
-    # Loop through each item in the JSON data and extract the 'url' field
-    articles_info = [
-    {
-        'title': article['title'],
-        'url': article['url'],
-        'publishedAt': article['publishedAt']
-    }
-    for article in all_articles['articles']
-    ]
-    
-    
-    #urls = [article['url'] for article in all_articles['articles']]
-    #titles = [article['title'] for article in all_articles['articles']]
-    #print(urls)
-    print(articles_info)
-    return(articles_info)
-findarticlesources()
+    from_date = (datetime.today().date() - timedelta(days=DAYS_BACK)).isoformat()
+
+    # Collect articles from multiple pages; no 'sources' filter = all sources
+    all_articles = []
+    seen_urls = set()
+
+    for page in range(1, MAX_PAGES + 1):
+        response = newsapi.get_everything(
+            q='Tennis',
+            from_param=from_date,
+            language='en',
+            #sources='bbc-sport, espn, the-guardian-uk, reuters',
+            sort_by='relevancy',
+            page_size=100,
+            page=page
+        )
+        articles = response.get('articles') or []
+        if not articles:
+            break
+        for article in articles:
+            url = article.get('url')
+            if not url or url in seen_urls:
+                continue
+            seen_urls.add(url)
+            # Skip entries with no title (often removed/placeholder)
+            if not (article.get('title') and article.get('title').strip()):
+                continue
+            all_articles.append({
+                'title': article['title'],
+                'url': url,
+                'publishedAt': article.get('publishedAt', '')
+            })
+        # If we got fewer than page_size, there are no more pages
+        if len(articles) < 100:
+            break
+
+    print(json.dumps({'total': len(all_articles), 'articles': all_articles}, indent=2))
+    return all_articles
+
+
+if __name__ == '__main__':
+    findarticlesources()
