@@ -39,3 +39,15 @@ def add_post_to_json(new_post):
     
     except Exception as e:
         return {'error': str(e)}
+
+
+def save_all_articles_to_blob(all_articles):
+    """Save the list of pulled articles to Azure blob storage as JSON."""
+    blob_name = 'postsdata/all_articles.json'
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
+    try:
+        json_str = json.dumps(all_articles, indent=2)
+        blob_client.upload_blob(json_str, overwrite=True)
+        return {'message': 'Articles saved successfully', 'count': len(all_articles)}
+    except Exception as e:
+        return {'error': str(e)}

@@ -11,6 +11,12 @@
     <div class="article-body">
         <p>{{ post.content }}</p>
     </div>
+    {% if post.source_url %}
+    <section class="article-source">
+        <p class="article-source__label">Source</p>
+        <a href="{{ post.source_url }}" class="article-source__link" target="_blank" rel="noopener noreferrer">{{ post.source_url }}</a>
+    </section>
+    {% endif %}
     <a href="{{ url_for('index') }}" class="btn btn--secondary back-link">Back to Home</a>
 </article>
 {% endblock %}
