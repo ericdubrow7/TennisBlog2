@@ -22,19 +22,25 @@
 
 <body>
     <header class="site-header">
-        <a class="site-header__brand site-header__brand-link" href="{{ url_for('index') }}" aria-label="Match Point Media (Home)">
-            <img src="{{ url_for('static', filename='Website_logo.png') }}" alt="Match Point Media" class="site-header__logo" width="180" height="32">
-        </a>
-        <nav class="site-header__nav">
-            <select id="pageDropdown" class="site-header__select pagenavdropdown" onchange="navigateToPage()" aria-label="Navigate to page">
-                <option value="#">Select Page</option>
-                <option value="{{ url_for('index') }}">Home</option>
-                <option value="{{ url_for('articles') }}">All Articles</option>
-                <option value="{{ url_for('rankings') }}">Rankings</option>
-                <option value="{{ url_for('abouttheauthor') }}">About the author</option>
-                <option value="{{ url_for('questionspage') }}">Questions</option>
-            </select>
-        </nav>
+        <div class="site-header__bar">
+            <a class="site-header__brand site-header__brand-link" href="{{ url_for('index') }}" aria-label="Match Point Media (Home)">
+                <img src="{{ url_for('static', filename='Website_logo.png') }}" alt="Match Point Media" class="site-header__logo" width="180" height="32">
+            </a>
+            <nav class="site-header__nav" aria-label="Main navigation">
+                <a class="site-header__link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                <div class="site-header__dropdown">
+                    <a class="site-header__link {% if request.endpoint == 'articles' %}is-active{% endif %}" href="{{ url_for('articles') }}">News</a>
+                    <ul class="site-header__dropdown-menu" aria-label="News categories">
+                        <li><a href="{{ url_for('articles') }}">Baseline Brief</a></li>
+                        <li><a href="{{ url_for('articles') }}">Court Culture</a></li>
+                        <li><a href="{{ url_for('articles') }}">The Tennis Lab</a></li>
+                    </ul>
+                </div>
+                <a class="site-header__link {% if request.endpoint == 'rankings' %}is-active{% endif %}" href="{{ url_for('rankings') }}">Rankings</a>
+                <a class="site-header__link {% if request.endpoint == 'abouttheauthor' %}is-active{% endif %}" href="{{ url_for('abouttheauthor') }}">About the author</a>
+                <a class="site-header__link {% if request.endpoint == 'questionspage' %}is-active{% endif %}" href="{{ url_for('questionspage') }}">Questions</a>
+            </nav>
+        </div>
     </header>
 
     <main class="main-content {% block main_class %}{% endblock %}">
@@ -45,15 +51,6 @@
         <p>&copy; 2024 Tennis Blog</p>
     </footer>
 
-    <script>
-        function navigateToPage() {
-            var dropdown = document.getElementById("pageDropdown");
-            var selectedPage = dropdown.value;
-            if (selectedPage !== "#") {
-                window.location.href = selectedPage;
-            }
-        }
-    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

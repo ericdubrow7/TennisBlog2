@@ -62,33 +62,35 @@ stories = []
 
 # Load the existing posts to check for duplicates
 existing_posts = load_existing_posts()
-existing_titles = [post['title'] for post in existing_posts]  # Extract all existing titles
+existing_titles = {post['title'] for post in existing_posts}  # set for fast lookup
+
 for article in articles_info:
-    story=generate_post(article['url'])
+    # Check for matching title before calling the API
+    if article['title'] in existing_titles:
+        print(f"Duplicate title found. Skipping: {article['title']}")
+        continue
+
+    story = generate_post(article['url'])
     print(story)
     date = datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ")
-    formatted_date= date.strftime("%Y-%m-%d")
+    formatted_date = date.strftime("%Y-%m-%d")
     new_post = {
         "title": article['title'],
-        "author": "Chat GPT",
+        "author": "Tennis Fan 1",
         "date": formatted_date,
         "content": f"{story}"
     }
-    file_path = 'posts.json'  # Path to your JSON file
     restricted_phrases = [
-    "I'm unable to access external websites", 
-    "external websites"  # Add as many phrases as needed
-    ]  
+        "I'm unable to access external websites",
+        "external websites"  # Add as many phrases as needed
+    ]
 
     if any(phrase in new_post["content"] for phrase in restricted_phrases):
         print("Skipping next action as the content contains the restricted phrase.")
     else:
-        if new_post['title'] in existing_titles:
-            print("Duplicate title found. Skipping the action.")
-        else:
-            # If the title doesn't exist, add the post
-            add_post_to_json(new_post)
-            print(f"Added new post: {new_post['title']}")
+        add_post_to_json(new_post)
+        existing_titles.add(article['title'])  # avoid duplicate in same run
+        print(f"Added new post: {new_post['title']}")
 
     stories.append(story)
 #print(stories)
