@@ -6,3 +6,5 @@ schedule
 azure.storage.blob
 azure.identity
 gunicorn
+requests
+beautifulsoup4

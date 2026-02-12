@@ -3,7 +3,8 @@ import json
 from newsapi import NewsApiClient
 import os
 from datetime import datetime, timedelta
-#from dotenv import load_dotenv
+import requests
+from bs4 import BeautifulSoup
 # Load environment variables from .env file
 #load_dotenv()
 
@@ -12,7 +13,41 @@ DAYS_BACK = 2
 # Number of pages to fetch (100 articles per page; free tier may limit total results)
 MAX_PAGES = 3
 
-def findarticlesources():
+# News API returns article "content" truncated to ~200 characters. To get full text we fetch the URL.
+REQUEST_TIMEOUT = 15
+REQUEST_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}
+
+
+def fetch_full_article_content(url):
+    """Fetch the article URL and extract full main text. Returns empty string on failure."""
+    try:
+        resp = requests.get(url, headers=REQUEST_HEADERS, timeout=REQUEST_TIMEOUT)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "html.parser")
+        # Remove script/style and other non-article elements
+        for tag in soup(["script", "style", "nav", "header", "footer", "aside"]):
+            tag.decompose()
+        # Prefer semantic article containers
+        for selector in ['article', '[itemprop="articleBody"]', 'main', '.article-body', '.post-content', '.entry-content']:
+            container = soup.select_one(selector)
+            if container:
+                paragraphs = container.find_all("p")
+                if paragraphs:
+                    text = "\n\n".join(p.get_text(strip=True) for p in paragraphs if p.get_text(strip=True))
+                    if len(text) > 100:
+                        return text
+        # Fallback: all paragraphs in the body
+        body = soup.find("body") or soup
+        paragraphs = body.find_all("p")
+        text = "\n\n".join(p.get_text(strip=True) for p in paragraphs if p.get_text(strip=True))
+        return text if text else ""
+    except Exception:
+        return ""
+
+
+def findarticlesources(fetch_full_content=True):
     news_api_key = os.getenv("NEWSAPI_API_KEY")
     newsapi = NewsApiClient(api_key=news_api_key)
 
@@ -43,11 +78,17 @@ def findarticlesources():
             # Skip entries with no title (often removed/placeholder)
             if not (article.get('title') and article.get('title').strip()):
                 continue
-            all_articles.append({
+            item = {
                 'title': article['title'],
                 'url': url,
-                'publishedAt': article.get('publishedAt', '')
-            })
+                'publishedAt': article.get('publishedAt', ''),
+                'description': article.get('description') or '',
+                'content': article.get('content') or ''  # News API truncates this to ~200 chars
+            }
+            if fetch_full_content:
+                full = fetch_full_article_content(url)
+                item['full_content'] = full if full else item['content']  # fallback to API snippet
+            all_articles.append(item)
         # If we got fewer than page_size, there are no more pages
         if len(articles) < 100:
             break
