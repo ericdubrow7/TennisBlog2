@@ -3,6 +3,7 @@ from find_article_sources import findarticlesources
 from flask import Blueprint, request, jsonify
 import openai
 import os
+import random
 #from dotenv import load_dotenv
 import json
 from newsapi import NewsApiClient
@@ -39,6 +40,35 @@ def load_existing_posts():
 openai.api_key = os.getenv("OPENAI_API_KEY")
 source_url = ""
 
+# Journalist personalities: each post is randomly assigned one. Name is shown as author; description shapes tone.
+JOURNALIST_PERSONALITIES = [
+    {
+        "name": "Tommy Tennis",
+        "description": "A highly professional tennis journalist who doesn't bring any external personality. Straightforward, factual, and neutral.",
+    },
+    {
+        "name": "Prick Queergios",
+        "description": "A prickly gay tennis journalist who is always on the attack. He loves Nick Kyrgios and tries to interject him into articles whenever possible. Sharp and combative tone.",
+    },
+    {
+        "name": "Randy Murray",
+        "description": "A very horny British tennis journalist who loves to make jokes about tennis players and the sport. Cheeky, double-entendre style with British humour.",
+    },
+    {
+        "name": "Carlos Alcatraz",
+        "description": "An eccentric Spanish convict who loves tennis, especially Spanish players. He brings a Spanish flair to his articles—dramatic, passionate, and a bit unhinged.",
+    },
+    {
+        "name": "Novax Djokavic",
+        "description": "A far right wing tennis journalist interested in conspiracy theories who likes to bring his political opinions into his articles. Skeptical, contrarian, and opinionated.",
+    },
+]
+
+
+def pick_random_personality():
+    """Return a randomly chosen journalist personality dict."""
+    return random.choice(JOURNALIST_PERSONALITIES)
+
 
 def is_article_tennis_related(article):
     """Use LLM to evaluate if the article is actually about tennis. Returns True only if tennis-related."""
@@ -71,13 +101,17 @@ def is_article_tennis_related(article):
         return False
 
 
-def generate_post(source_url):
-    """Generate a catchy headline and article body from the source URL. Returns (title, body)."""
+def generate_post(source_url, personality):
+    """Generate a headline and article body in the given journalist's voice. Returns (title, body)."""
+    name = personality["name"]
+    desc = personality["description"]
     instruction = (
-        "You are a sports journalist. You are given a website URL Based ONLY on the data from this website, you need to write a short tennis news article. "
+        f"You are writing as the tennis journalist '{name}'. Their persona: {desc}\n\n"
+        "Based ONLY on the data from the given website URL, write a short tennis news article "
+        "in this journalist's distinct voice, style, and tone. The headline and body must sound like them.\n\n"
         "Reply with exactly two parts: "
-        "1) A short, catchy headline (one line, no quotation marks). "
-        "2) A blank line, then the article body (no title repeated in the body). "
+        "1) A short, catchy headline (one line, no quotation marks) in their style. "
+        "2) A blank line, then the article body (no title repeated in the body) in their voice.\n"
         "Format: first line is the headline, then a blank line, then the body."
     )
     completion = openai.chat.completions.create(
@@ -113,14 +147,15 @@ for article in articles_info:
         print(f"Not tennis-related. Skipping (no post generated): {article['title']}")
         continue
 
-    generated_title, story = generate_post(article['url'])
-    print(f"Title: {generated_title}\n{story}")
+    personality = pick_random_personality()
+    generated_title, story = generate_post(article['url'], personality)
+    print(f"Author: {personality['name']}\nTitle: {generated_title}\n{story}")
     date = datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%SZ")
     formatted_date = date.strftime("%Y-%m-%d")
     new_post = {
         "title": generated_title,
         "original_title": article["title"],
-        "author": "Tennis Fan 1",
+        "author": personality["name"],
         "date": formatted_date,
         "content": story,
         "source_url": article["url"]

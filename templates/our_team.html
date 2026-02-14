@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Team — Match Point Media{% endblock %}
+
+{% block content %}
+<h2 class="page-title">Our Team</h2>
+<p class="team-intro">Meet the journalists behind Match Point Media.</p>
+<ul class="team-grid">
+    {% for member in team_members %}
+    <li class="team-card">
+        <div class="team-card__headshot-wrap">
+            {% if member.headshot %}
+            <img src="{{ member.headshot }}" alt="{{ member.name }}" class="team-card__headshot">
+            {% else %}
+            <div class="team-card__headshot-placeholder" aria-hidden="true">
+                <span class="team-card__headshot-placeholder-text">Photo</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="team-card__body">
+            <h3 class="team-card__name">{{ member.name }}</h3>
+            <p class="team-card__bio">{{ member.bio }}</p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -753,6 +753,241 @@ p:last-child {
 }
 
 /* --------------------------------------------------------------------------
+   Our Team page
+   -------------------------------------------------------------------------- */
+.team-intro {
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-8);
+  font-size: var(--text-lg);
+}
+
+.team-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+  gap: var(--space-8);
+}
+
+.team-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.team-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--color-border);
+}
+
+.team-card__headshot-wrap {
+  aspect-ratio: 1;
+  background: var(--color-bg);
+}
+
+.team-card__headshot {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.team-card__headshot-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-border);
+}
+
+.team-card__headshot-placeholder-text {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.team-card__body {
+  padding: var(--space-6);
+  flex: 1;
+}
+
+.team-card__name {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: var(--leading-tight);
+}
+
+.team-card__bio {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+/* --------------------------------------------------------------------------
+   Baseline Brief — Coming soon page (on-theme)
+   -------------------------------------------------------------------------- */
+.coming-soon {
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16) var(--space-6);
+  text-align: center;
+}
+.coming-soon__court-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  max-width: 32rem;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-border) 15%,
+    var(--color-accent) 50%,
+    var(--color-border) 85%,
+    transparent 100%
+  );
+  opacity: 0.4;
+  pointer-events: none;
+}
+.coming-soon__content {
+  position: relative;
+  z-index: 1;
+  max-width: 28rem;
+}
+.coming-soon__label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-3);
+}
+.coming-soon__title {
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  margin: 0 0 var(--space-4);
+  letter-spacing: -0.02em;
+}
+.coming-soon__tagline {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin: 0 0 var(--space-8);
+  line-height: var(--leading-relaxed);
+}
+.coming-soon__back {
+  margin-top: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   The Tennis Lab — analytical theme (dark, data-visualization feel)
+   -------------------------------------------------------------------------- */
+.tennis-lab-page {
+  background: #0f1419;
+  min-height: calc(100vh - var(--header-height, 4rem) - 120px);
+  max-width: none;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+.tennis-lab-page .site-footer {
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+.tennis-lab-page .site-footer p {
+  color: rgba(148, 163, 184, 0.7);
+}
+
+.tennis-lab {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-16) var(--space-6);
+  overflow: hidden;
+}
+
+/* Grid overlay — graph-paper / analytical background */
+.tennis-lab__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+}
+.tennis-lab__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+.tennis-lab__glow--1 {
+  width: 400px;
+  height: 400px;
+  background: #06b6d4;
+  top: 10%;
+  left: 15%;
+}
+.tennis-lab__glow--2 {
+  width: 320px;
+  height: 320px;
+  background: #0ea5e9;
+  bottom: 15%;
+  right: 20%;
+}
+
+.tennis-lab__content {
+  position: relative;
+  z-index: 1;
+  max-width: 42rem;
+  text-align: center;
+}
+
+.tennis-lab__title {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--color-accent);
+  margin: 0 0 var(--space-4);
+  line-height: var(--leading-tight);
+}
+
+.tennis-lab__tagline {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: var(--leading-relaxed);
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.tennis-lab__subline {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: #64748b;
+  margin: var(--space-4) 0 0;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
    8. Questions page (form centering)
    -------------------------------------------------------------------------- */
 .question-page .main-content {
