@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Baseline Brief — Coming Soon — Match Point Media{% endblock %}
+
+{% block main_class %}main-content--narrow{% endblock %}
+
+{% block content %}
+<section class="coming-soon">
+    <div class="coming-soon__court-line" aria-hidden="true"></div>
+    <div class="coming-soon__content">
+        <p class="coming-soon__label">Baseline Brief</p>
+        <h1 class="coming-soon__title">Coming soon</h1>
+        <p class="coming-soon__tagline">Your daily dose of tennis insight is on its way. Stay tuned.</p>
+        <a href="{{ url_for('index') }}" class="btn btn--secondary coming-soon__back">Back to Home</a>
+    </div>
+</section>
+{% endblock %}

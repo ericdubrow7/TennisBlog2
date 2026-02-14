@@ -1,0 +1,11 @@
+Future features:
+- create new personalities for the blog. each with their own style and tone.
+  -- Prick Queergios - A prickly gay tennis journalist who is always on the attack. He also loves Nick Kyrgios and trys to interject him into articles whenever possible.
+  -- Randy Murray - A very horny british tennis journalist who loves to make jokes about tennis players and the sport.
+  -- Carlos Alcatraz - An eccentric spanish convict who loves tennis, especially spanish players. He likes to bring a spanish flair to his articles.
+  -- Novax Djokavic - A far right wing tennis journalist who is interested in conspiracy theories and likes to bring his political opinions into his articles.
+
+- Add a feature to categorize articles into different categories. Baseline Brief, Court Culture, The Tennis Lab.
+- Add a feature to create a weekly summary of the most important tennis news. The Summary is called the Baseline Brief.
+- Adda feature / page called the Tennis Lab. This is a collection of models and analytics tools that people can use to analyze matches and make predictions "provides advanced, surface-adjusted predictive tennis analytics for serious fans and bettors.”"
+
