@@ -29,16 +29,19 @@
             <nav class="site-header__nav" aria-label="Main navigation">
                 <a class="site-header__link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Home</a>
                 <div class="site-header__dropdown">
-                    <a class="site-header__link {% if request.endpoint == 'articles' %}is-active{% endif %}" href="{{ url_for('articles') }}">News</a>
+                    <a class="site-header__link {% if request.endpoint == 'articles' or request.endpoint == 'baseline_brief' %}is-active{% endif %}" href="{{ url_for('articles') }}">News</a>
                     <ul class="site-header__dropdown-menu" aria-label="News categories">
-                        <li><a href="{{ url_for('articles') }}">Baseline Brief</a></li>
-                        <li><a href="{{ url_for('articles') }}">Court Culture</a></li>
-                        <li><a href="{{ url_for('articles') }}">The Tennis Lab</a></li>
+                        <li><a href="{{ url_for('articles') }}">All News</a></li>
+                        {% for journalist_name in journalist_names %}
+                        <li><a href="{{ url_for('articles', author=journalist_name) }}">{{ journalist_name }}</a></li>
+                        {% endfor %}
+                        <li><a href="{{ url_for('baseline_brief') }}">Baseline Brief</a></li>
                     </ul>
                 </div>
+                <a class="site-header__link {% if request.endpoint == 'tennis_lab' %}is-active{% endif %}" href="{{ url_for('tennis_lab') }}">The Tennis Lab</a>
                 <a class="site-header__link {% if request.endpoint == 'rankings' %}is-active{% endif %}" href="{{ url_for('rankings') }}">Rankings</a>
+                <a class="site-header__link {% if request.endpoint == 'our_team' %}is-active{% endif %}" href="{{ url_for('our_team') }}">Our Team</a>
                 <a class="site-header__link {% if request.endpoint == 'abouttheauthor' %}is-active{% endif %}" href="{{ url_for('abouttheauthor') }}">About the author</a>
-                <a class="site-header__link {% if request.endpoint == 'questionspage' %}is-active{% endif %}" href="{{ url_for('questionspage') }}">Questions</a>
             </nav>
         </div>
     </header>
