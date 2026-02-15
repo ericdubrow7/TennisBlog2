@@ -47,7 +47,7 @@ JOURNALIST_PERSONALITIES = [
         "description": "A highly professional tennis journalist who doesn't bring any external personality. Straightforward, factual, and neutral.",
     },
     {
-        "name": "Prick Queergios",
+        "name": "Prick Keergios",
         "description": "A prickly gay tennis journalist who is always on the attack. He loves Nick Kyrgios and tries to interject him into articles whenever possible. Sharp and combative tone.",
     },
     {
