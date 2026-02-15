@@ -6,7 +6,7 @@
 <article>
     <header class="article-header">
         <h2 class="article-title">{{ post.title }}</h2>
-        <p class="meta"><strong>By {{ post.author }} on {{ post.date }}</strong></p>
+        <p class="meta"><strong>By <a href="{{ url_for('our_team') }}">{{ post.author }}</a> on {{ post.date }}</strong></p>
     </header>
     <div class="article-body">
         <p>{{ post.content }}</p>

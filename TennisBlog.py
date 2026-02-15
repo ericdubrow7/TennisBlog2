@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 from flask import jsonify
 from Load_Rankings import load_rankings, load_WTArankings
 import json
@@ -26,7 +26,7 @@ blob_service_client = BlobServiceClient(
 # Journalist names for News dropdown; must match post['author'] from Create_new_post
 JOURNALIST_NAMES = [
     "Tommy Tennis",
-    "Prick Queergios",
+    "Prick Keergios",
     "Randy Murray",
     "Carlos Alcatraz",
     "Novax Djokavic",
@@ -40,7 +40,7 @@ TEAM_MEMBERS = [
         "headshot": None,
     },
     {
-        "name": "Prick Queergios",
+        "name": "Prick Keergios",
         "bio": "Prick brings an unapologetically sharp perspective to the beat. A longtime fan of Nick Kyrgios, he’s never shy about calling out what he sees on and off the court.",
         "headshot": None,
     },
@@ -114,9 +114,19 @@ def abouttheauthor():
     return render_template('abouttheauthor.html')
 
 
+def _journalist_headshot_path(name):
+    """Path to headshot in static/Journalists/; filename is slugified name + .png."""
+    slug = name.lower().replace(" ", "_")
+    return f"Journalists/{slug}.png"
+
+
 @app.route('/our-team')
 def our_team():
-    return render_template('our_team.html', team_members=TEAM_MEMBERS)
+    team_with_headshots = [
+        {**m, "headshot": url_for("static", filename=_journalist_headshot_path(m["name"]))}
+        for m in TEAM_MEMBERS
+    ]
+    return render_template('our_team.html', team_members=team_with_headshots)
 
 
 @app.route('/rankings')
