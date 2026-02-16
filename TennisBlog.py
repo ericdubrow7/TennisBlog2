@@ -1,15 +1,19 @@
 from flask import Flask, render_template, request, url_for
 from flask import jsonify
-from Load_Rankings import load_rankings, load_WTArankings
 import json
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # load .env before any code that uses Azure env vars
+
+from Load_Rankings import load_rankings, load_WTArankings
 from azure.storage.blob import BlobServiceClient, BlobClient
 from azure.identity import ClientSecretCredential
+
 app = Flask(__name__)
 
-
-# Your Azure details
+# Your Azure details (use the account/container where postsdata/posts.json lives)
 tenant_id = os.getenv("YOUR_AZURE_TENANT_ID")
 client_id = os.getenv("YOUR_AZURE_CLIENT_ID")
 client_secret = os.getenv("YOUR_AZURE_CLIENT_SECRET")

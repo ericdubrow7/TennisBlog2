@@ -1,4 +1,5 @@
 Flask==2.3.3
+python-dotenv
 openai
 newsapi-python
 datetime
