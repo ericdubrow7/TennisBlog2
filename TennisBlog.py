@@ -13,6 +13,11 @@ from azure.identity import ClientSecretCredential
 
 app = Flask(__name__)
 
+# Player lab API (top-500 players + match details)
+from create_player_list_view import register_player_list_views
+
+register_player_list_views(app)
+
 # Your Azure details (use the account/container where postsdata/posts.json lives)
 tenant_id = os.getenv("YOUR_AZURE_TENANT_ID")
 client_id = os.getenv("YOUR_AZURE_CLIENT_ID")

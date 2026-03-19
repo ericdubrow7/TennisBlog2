@@ -1,0 +1,121 @@
+.tennis-lab-players {
+  margin-top: 0;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: var(--space-10) var(--space-6);
+  padding-top: var(--space-6);
+}
+
+.tennis-lab-players > h2 {
+  color: #e2e8f0;
+  font-size: var(--text-2xl);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-tight);
+}
+
+.tennis-lab-players__subline {
+  color: rgba(226, 232, 240, 0.78);
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-base);
+}
+
+#top-players-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+
+.player-details {
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 12px;
+  padding: .65rem .85rem;
+  background: rgba(15, 23, 42, 0.45);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+  backdrop-filter: blur(8px);
+}
+
+.player-details[open] {
+  border-color: rgba(34, 211, 238, 0.35);
+  background: rgba(15, 23, 42, 0.62);
+}
+
+.player-summary {
+  cursor: pointer;
+  font-weight: 700;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #e2e8f0;
+  list-style: none;
+}
+
+.player-summary small {
+  font-weight: 600;
+  opacity: .9;
+  color: rgba(226, 232, 240, 0.78);
+}
+
+.player-matches-wrap {
+  margin-top: .85rem;
+}
+
+.matches-scroller {
+  max-height: 420px;
+  overflow: auto; /* both vertical + horizontal scroll as needed */
+  width: 100%;
+  min-width: 0;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  border-radius: 10px;
+  background: rgba(2, 6, 23, 0.25);
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
+  overscroll-behavior: contain;
+}
+
+table.player-matches {
+  border-collapse: collapse;
+  min-width: 100%;
+  width: max-content;
+  color: rgba(226, 232, 240, 0.92);
+  table-layout: auto;
+}
+
+table.player-matches th,
+table.player-matches td {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  padding: 4px 7px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+table.player-matches th {
+  background: rgba(2, 6, 23, 0.55);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+button.load-more-matches {
+  margin-top: .6rem;
+  padding: .45rem .8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  background: rgba(37, 99, 235, 0.18);
+  color: #e2e8f0;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button.load-more-matches:hover {
+  background: rgba(37, 99, 235, 0.28);
+  border-color: rgba(34, 211, 238, 0.45);
+}
+
+button.load-more-matches:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

@@ -9,3 +9,6 @@ Future features:
 - Add a feature to create a weekly summary of the most important tennis news. The Summary is called the Baseline Brief.
 - Adda feature / page called the Tennis Lab. This is a collection of models and analytics tools that people can use to analyze matches and make predictions "provides advanced, surface-adjusted predictive tennis analytics for serious fans and bettors.”"
 
+
+
+>> refresh the Azure Data >> Run the Load_Player_Data_Functions file >> 

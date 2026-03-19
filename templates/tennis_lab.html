@@ -4,6 +4,10 @@
 
 {% block main_class %}tennis-lab-page{% endblock %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='tennis_lab.css') }}">
+{% endblock %}
+
 {% block content %}
 <section class="tennis-lab">
     <div class="tennis-lab__grid" aria-hidden="true"></div>
@@ -15,4 +19,168 @@
         <p class="tennis-lab__subline">insights coming soon</p>
     </div>
 </section>
+
+<section class="tennis-lab-players" id="tennis-lab-players">
+    <h2>Top 500 Players</h2>
+    <p class="tennis-lab-players__subline">Click a player to view their most recent match stats. Matches are sorted by date.</p>
+
+    <div id="top-players-status" role="status" aria-live="polite">Loading players...</div>
+    <div id="top-players-list"></div>
+</section>
+
+<script>
+    function escapeHtml(value) {
+        if (value === null || value === undefined) return "";
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+    function ensureTable(container, fields) {
+        const existingTable = container.querySelector("table.player-matches");
+        if (existingTable) return existingTable;
+
+        const scroller = document.createElement("div");
+        scroller.className = "matches-scroller";
+
+        const table = document.createElement("table");
+        table.className = "player-matches";
+
+        const thead = document.createElement("thead");
+        const headRow = document.createElement("tr");
+        fields.forEach((f) => {
+            const th = document.createElement("th");
+            th.textContent = f;
+            headRow.appendChild(th);
+        });
+        thead.appendChild(headRow);
+
+        const tbody = document.createElement("tbody");
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        scroller.appendChild(table);
+        const btn = container.querySelector("button.load-more-matches");
+        if (btn) container.insertBefore(scroller, btn);
+        else container.appendChild(scroller);
+        return table;
+    }
+
+    async function loadPlayerMatches(detailsEl, offset) {
+        const playerId = detailsEl.dataset.playerId;
+        const container = detailsEl.querySelector(".player-matches-wrap");
+        const fieldsFromDataset = container.dataset.fields;
+
+        const res = await fetch(`/api/player-matches?player_id=${encodeURIComponent(playerId)}&offset=${offset}&limit=10`);
+        if (!res.ok) throw new Error(`Failed to load matches (${res.status})`);
+        const data = await res.json();
+
+        // Persist fields so "load more" keeps the same column set.
+        if (!fieldsFromDataset) {
+            container.dataset.fields = JSON.stringify(data.fields || []);
+        }
+
+        const fields = container.dataset.fields ? JSON.parse(container.dataset.fields) : (data.fields || []);
+        const table = ensureTable(container, fields);
+        const tbody = table.querySelector("tbody");
+
+        data.matches.forEach((m) => {
+            const tr = document.createElement("tr");
+            fields.forEach((f) => {
+                const td = document.createElement("td");
+                const v = m ? m[f] : "";
+                td.textContent = v === null || v === undefined ? "" : String(v);
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+        });
+
+        // Update offset + button state
+        container.dataset.offset = String(data.offset + data.limit);
+        const btn = detailsEl.querySelector("button.load-more-matches");
+        if (btn) {
+            const nextOffset = Number(container.dataset.offset || 0);
+            btn.disabled = nextOffset >= data.total_matches;
+            btn.style.display = btn.disabled ? "none" : "inline-block";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const statusEl = document.getElementById("top-players-status");
+        const listEl = document.getElementById("top-players-list");
+
+        try {
+            const res = await fetch("/api/top-players?limit=500");
+            if (!res.ok) throw new Error(`Failed to load top players (${res.status})`);
+            const data = await res.json();
+            const players = data.players || [];
+
+            statusEl.textContent = "";
+
+            const frag = document.createDocumentFragment();
+            players.forEach((p) => {
+                const details = document.createElement("details");
+                details.className = "player-details";
+                details.dataset.playerId = p.id;
+                details.dataset.loaded = "false";
+
+                const summary = document.createElement("summary");
+                summary.className = "player-summary";
+                summary.innerHTML = `
+                    <span>${escapeHtml(p.player)}</span>
+                    <small>#${escapeHtml(p.ranking_num)} • ${escapeHtml(p.points)} pts</small>
+                `;
+
+                const matchesWrap = document.createElement("div");
+                matchesWrap.className = "player-matches-wrap";
+                matchesWrap.dataset.offset = "0";
+                matchesWrap.innerHTML = "<div>Loading matches...</div>";
+
+                const loadMoreBtn = document.createElement("button");
+                loadMoreBtn.className = "load-more-matches";
+                loadMoreBtn.type = "button";
+                loadMoreBtn.textContent = "Load more";
+                loadMoreBtn.style.display = "none";
+
+                matchesWrap.appendChild(loadMoreBtn);
+
+                details.appendChild(summary);
+                details.appendChild(matchesWrap);
+
+                details.addEventListener("toggle", async () => {
+                    if (!details.open) return;
+                    if (details.dataset.loaded === "true") return;
+                    details.dataset.loaded = "true";
+
+                    try {
+                        const container = details.querySelector(".player-matches-wrap");
+                        container.innerHTML = "<div>Loading matches...</div>";
+                        container.appendChild(loadMoreBtn);
+
+                        await loadPlayerMatches(details, 0);
+
+                        loadMoreBtn.onclick = async () => {
+                            const currentOffset = Number(container.dataset.offset || 0);
+                            loadMoreBtn.disabled = true;
+                            await loadPlayerMatches(details, currentOffset);
+                            loadMoreBtn.disabled = loadMoreBtn.style.display === "none";
+                        };
+                    } catch (err) {
+                        const container = details.querySelector(".player-matches-wrap");
+                        container.innerHTML = `<div style="color:#b00020;">${escapeHtml(err.message)}</div>`;
+                    }
+                });
+
+                frag.appendChild(details);
+            });
+
+            listEl.appendChild(frag);
+        } catch (err) {
+            statusEl.textContent = `Failed to load players: ${err.message}`;
+        }
+    });
+</script>
 {% endblock %}

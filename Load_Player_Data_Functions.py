@@ -85,4 +85,7 @@ def read_json_from_blob():
         print(f"Error loading player_data_matches: {e}")
         return None, None
 
-read_json_from_blob()
+
+
+if __name__ == "__main__":
+    read_json_from_blob()
