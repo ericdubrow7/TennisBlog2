@@ -62,7 +62,12 @@
         table.appendChild(thead);
         table.appendChild(tbody);
 
-        scroller.appendChild(table);
+        // Wrap the table so it can size to its intrinsic "max-content" width,
+        // ensuring the outer scroller can actually overflow horizontally.
+        const tableWrap = document.createElement("div");
+        tableWrap.className = "player-matches-table";
+        tableWrap.appendChild(table);
+        scroller.appendChild(tableWrap);
         const btn = container.querySelector("button.load-more-matches");
         if (btn) container.insertBefore(scroller, btn);
         else container.appendChild(scroller);

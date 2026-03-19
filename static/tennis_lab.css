@@ -63,6 +63,13 @@
   margin-top: .85rem;
 }
 
+.player-matches-table {
+  /* Allow the table to expand to fit all columns/content. */
+  display: inline-block;
+  width: max-content;
+  min-width: 100%;
+}
+
 .matches-scroller {
   max-height: 420px;
   overflow: auto; /* both vertical + horizontal scroll as needed */
