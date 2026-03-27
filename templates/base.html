@@ -8,34 +8,50 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Google tag (gtag.js) - loads on every page that extends base -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GR1HJ525RY"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-GR1HJ525RY', {
+        'send_page_view': true,
+        'page_path': {{ request.path|tojson }},
+        'page_title': {{ self.title()|tojson }}
+      });
+    </script>
     {% block head %}{% endblock %}
 </head>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GR1HJ525RY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-GR1HJ525RY');
-</script>
-
 <body>
     <header class="site-header">
-        <div class="site-header__brand">
-            <img src="{{ url_for('static', filename='tennisballimage.png') }}" alt="" class="site-header__logo" width="32" height="32">
-            <h1 class="site-header__title">Tennis News Blog</h1>
+        <div class="site-header__bar">
+            <a class="site-header__brand site-header__brand-link" href="{{ url_for('index') }}" aria-label="Match Point Media (Home)">
+                <img src="{{ url_for('static', filename='Website_logo.png') }}" alt="Match Point Media" class="site-header__logo" width="180" height="32">
+            </a>
+            <nav class="site-header__nav" aria-label="Main navigation">
+                <a class="site-header__link {% if request.endpoint == 'index' %}is-active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                <div class="site-header__dropdown">
+                    <a class="site-header__link {% if request.endpoint == 'articles' or request.endpoint == 'baseline_brief' %}is-active{% endif %}" href="{{ url_for('articles') }}">News</a>
+                    <ul class="site-header__dropdown-menu" aria-label="News categories">
+                        <li><a href="{{ url_for('articles') }}">All News</a></li>
+                        <li class="site-header__dropdown-item--has-submenu">
+                            <span class="site-header__dropdown-submenu-trigger" aria-haspopup="true" aria-expanded="false">By Journalist</span>
+                            <ul class="site-header__dropdown-submenu" aria-label="By journalist">
+                                {% for journalist_name in journalist_names %}
+                                <li><a href="{{ url_for('articles', author=journalist_name) }}">{{ journalist_name }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        <li><a href="{{ url_for('baseline_brief') }}">Baseline Brief</a></li>
+                    </ul>
+                </div>
+                <a class="site-header__link {% if request.endpoint == 'tennis_lab' %}is-active{% endif %}" href="{{ url_for('tennis_lab') }}">The Tennis Lab</a>
+                <a class="site-header__link {% if request.endpoint == 'rankings' %}is-active{% endif %}" href="{{ url_for('rankings') }}">Rankings</a>
+                <a class="site-header__link {% if request.endpoint == 'our_team' %}is-active{% endif %}" href="{{ url_for('our_team') }}">Our Team</a>
+                <a class="site-header__link {% if request.endpoint == 'abouttheauthor' %}is-active{% endif %}" href="{{ url_for('abouttheauthor') }}">About the author</a>
+            </nav>
         </div>
-        <nav class="site-header__nav">
-            <a href="{{ url_for('index') }}">Home</a>
-            <select id="pageDropdown" class="site-header__select pagenavdropdown" onchange="navigateToPage()" aria-label="Navigate to page">
-                <option value="#">Select Page</option>
-                <option value="{{ url_for('index') }}">Home</option>
-                <option value="{{ url_for('rankings') }}">Rankings</option>
-                <option value="{{ url_for('abouttheauthor') }}">About the author</option>
-                <option value="{{ url_for('questionspage') }}">Questions</option>
-            </select>
-        </nav>
     </header>
 
     <main class="main-content {% block main_class %}{% endblock %}">
@@ -46,15 +62,6 @@
         <p>&copy; 2024 Tennis Blog</p>
     </footer>
 
-    <script>
-        function navigateToPage() {
-            var dropdown = document.getElementById("pageDropdown");
-            var selectedPage = dropdown.value;
-            if (selectedPage !== "#") {
-                window.location.href = selectedPage;
-            }
-        }
-    </script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

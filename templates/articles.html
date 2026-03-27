@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if author_filter %}Articles by {{ author_filter }}{% else %}All Articles{% endif %} — Match Point Media{% endblock %}
+
+{% block main_class %}articles-page{% endblock %}
+
+{% block content %}
+<h2 class="page-title">{% if author_filter %}<a href="{{ url_for('our_team') }}" class="page-title__link">Articles by {{ author_filter }}</a>{% else %}Latest Tennis News{% endif %}</h2>
+<div class="content-grid">
+    <ul class="posts-list">
+        {% for post, post_id in post_list %}
+        <li>
+            <article class="card">
+                <h3 class="card__title"><a href="{{ url_for('post', post_id=post_id) }}">{{ post.title }}</a></h3>
+                <p class="meta">By {{ post.author }} on {{ post.date }}</p>
+                <p class="card__excerpt">{{ post.content[:100] }}...</p>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

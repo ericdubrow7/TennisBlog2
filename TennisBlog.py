@@ -1,16 +1,19 @@
-from flask import Flask, render_template
-from flask import Flask, jsonify
-from QuestionresponseAPI import ask_bp
-from Load_Rankings import load_rankings, load_WTArankings
+from flask import Flask, render_template, request, url_for
+from flask import jsonify
 import json
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # load .env before any code that uses Azure env vars
+
+from Load_Rankings import load_rankings, load_WTArankings
 from azure.storage.blob import BlobServiceClient, BlobClient
 from azure.identity import ClientSecretCredential
+
 app = Flask(__name__)
 
-
-# Your Azure details
+# Your Azure details (use the account/container where postsdata/posts.json lives)
 tenant_id = os.getenv("YOUR_AZURE_TENANT_ID")
 client_id = os.getenv("YOUR_AZURE_CLIENT_ID")
 client_secret = os.getenv("YOUR_AZURE_CLIENT_SECRET")
@@ -22,6 +25,50 @@ blob_service_client = BlobServiceClient(
     account_url=f"https://{storage_account_name}.blob.core.windows.net",
     credential=credential
 )
+
+
+# Journalist names for News dropdown; must match post['author'] from Create_new_post
+JOURNALIST_NAMES = [
+    "Tommy Tennis",
+    "Prick Keergios",
+    "Randy Murray",
+    "Carlos Alcatraz",
+    "Novax Djokavic",
+]
+
+# Team page: journalists with bio and optional headshot URL (None = placeholder)
+TEAM_MEMBERS = [
+    {
+        "name": "Tommy Tennis",
+        "bio": "A veteran tennis journalist with a no-nonsense approach. Tommy keeps coverage factual and balanced, giving readers the story without the spin.",
+        "headshot": None,
+    },
+    {
+        "name": "Prick Keergios",
+        "bio": "Prick brings an unapologetically sharp perspective to the beat. A longtime fan of Nick Kyrgios, he’s never shy about calling out what he sees on and off the court.",
+        "headshot": None,
+    },
+    {
+        "name": "Randy Murray",
+        "bio": "British correspondent with a knack for finding the lighter side of the tour. Randy’s been covering tennis for years and still finds new ways to make readers laugh.",
+        "headshot": None,
+    },
+    {
+        "name": "Carlos Alcatraz",
+        "bio": "Spanish tennis obsessive with a flair for drama. Carlos lives for the clay season and Spanish players, and his pieces bring that passion to every story.",
+        "headshot": None,
+    },
+    {
+        "name": "Novax Djokavic",
+        "bio": "Contrarian commentator with a taste for the controversial. Novax isn’t afraid to question the mainstream narrative and stir the pot.",
+        "headshot": None,
+    },
+]
+
+
+@app.context_processor
+def inject_journalists():
+    return dict(journalist_names=JOURNALIST_NAMES)
 
 
 # Sample blog posts
@@ -38,7 +85,27 @@ def load_posts():
 @app.route('/')
 def index():
     posts = load_posts()
-    return render_template('index.html', posts=posts)
+    return render_template('home.html', posts=posts[:3])
+
+@app.route('/baseline-brief')
+def baseline_brief():
+    return render_template('baseline_brief.html')
+
+
+@app.route('/tennis-lab')
+def tennis_lab():
+    return render_template('tennis_lab.html')
+
+
+@app.route('/articles')
+def articles():
+    all_posts = load_posts()
+    author = request.args.get('author')
+    if author:
+        post_list = [(p, i) for i, p in enumerate(all_posts) if p.get('author') == author]
+    else:
+        post_list = [(p, i) for i, p in enumerate(all_posts)]
+    return render_template('articles.html', post_list=post_list, author_filter=author)
 
 @app.route('/post/<int:post_id>')
 def post(post_id):
@@ -50,9 +117,21 @@ def post(post_id):
 def abouttheauthor():
     return render_template('abouttheauthor.html')
 
-@app.route('/questionspage')
-def questionspage():
-    return render_template('questionspage.html')
+
+def _journalist_headshot_path(name):
+    """Path to headshot in static/Journalists/; filename is slugified name + .png."""
+    slug = name.lower().replace(" ", "_")
+    return f"Journalists/{slug}.png"
+
+
+@app.route('/our-team')
+def our_team():
+    team_with_headshots = [
+        {**m, "headshot": url_for("static", filename=_journalist_headshot_path(m["name"]))}
+        for m in TEAM_MEMBERS
+    ]
+    return render_template('our_team.html', team_members=team_with_headshots)
+
 
 @app.route('/rankings')
 def rankings():
@@ -65,8 +144,6 @@ def WTArankings():
     rankings, last_modified_date = load_WTArankings()
     rankings = rankings['rankings']
     return jsonify(rankings=rankings, last_modified_date = last_modified_date)
-
-app.register_blueprint(ask_bp)
 
 if __name__ == '__main__':
     app.run(debug=True)

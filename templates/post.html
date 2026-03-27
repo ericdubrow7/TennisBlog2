@@ -6,11 +6,17 @@
 <article>
     <header class="article-header">
         <h2 class="article-title">{{ post.title }}</h2>
-        <p class="meta"><strong>By {{ post.author }} on {{ post.date }}</strong></p>
+        <p class="meta"><strong>By <a href="{{ url_for('our_team') }}">{{ post.author }}</a> on {{ post.date }}</strong></p>
     </header>
     <div class="article-body">
         <p>{{ post.content }}</p>
     </div>
+    {% if post.source_url %}
+    <section class="article-source">
+        <p class="article-source__label">Source</p>
+        <a href="{{ post.source_url }}" class="article-source__link" target="_blank" rel="noopener noreferrer">{{ post.source_url }}</a>
+    </section>
+    {% endif %}
     <a href="{{ url_for('index') }}" class="btn btn--secondary back-link">Back to Home</a>
 </article>
 {% endblock %}
